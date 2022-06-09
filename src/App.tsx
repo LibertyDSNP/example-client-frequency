@@ -2,14 +2,14 @@ import React from 'react';
 import logo from './logo.svg';
 import {Button} from "antd";
 import './App.css';
-import ConnectWallet from "./components/ConnectWallet";
+import Main from "./components/Main";
 
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
 function App() {
   return (
     <div className="App">
-      <ConnectWallet />
+      <Main />
     </div>
   );
 }
