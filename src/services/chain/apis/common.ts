@@ -5,8 +5,8 @@ import { EventRecord } from "@polkadot/types/interfaces/system/types";
 
 // Notice: any changes to this should be reflected on scaleEncode(data: DelegateData) also
 export interface DelegateData {
-  authorizedMsaId: number;
-  permission: number;
+  authorizedMsaId: bigint;  // BigNumber?
+  permission: bigint;
 }
 
 /**
