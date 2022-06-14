@@ -2,7 +2,6 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { createInjector } from "../chain/test/extension";
 import { Signer } from "@polkadot/api/types";
 import { dotWallet } from "./dotWallet";
-import {HexString} from "../dsnp/types";
 
 // HOW TO ADD A WALLET
 // Add the new wallet to the enum and switch/case
@@ -33,7 +32,7 @@ export interface Wallet {
   login: (address: string | undefined) => Promise<void>;
   logout: () => void;
   getAccount: () => InjectedAccountWithMeta | undefined;
-  getAddress: () => HexString;
+  getAddress: () => string;
   getSigner: () => Promise<Signer | undefined>;
   availableAccounts: () => Promise<AccountDetails[]>;
 }

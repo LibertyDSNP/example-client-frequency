@@ -7,7 +7,6 @@ import {
   InjectedAccountWithMeta,
   InjectedExtension,
 } from "@polkadot/extension-inject/types";
-import { HexString } from "../dsnp/types";
 import { Signer } from "@polkadot/api/types";
 import { AccountDetails, Wallet, WalletType } from "./wallet";
 
@@ -48,7 +47,7 @@ export const dotWallet: Wallet = {
 
   getAccount: (): InjectedAccountWithMeta | undefined => currentAccount,
 
-  getAddress: (): HexString => {
+  getAddress: (): string => {
     return currentAccount?.address || "";
   },
 

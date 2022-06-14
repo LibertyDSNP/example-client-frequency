@@ -20,6 +20,5 @@ export const setupProviderApi = async (config: Config, providerHost: string = ''
         types,
         rpc,
     });
-    console.log({rpc})
     return config.providerApi;
 };

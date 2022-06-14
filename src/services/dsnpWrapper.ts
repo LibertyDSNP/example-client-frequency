@@ -19,6 +19,7 @@ export const setupProvider = async (walletType: WalletType): Promise<void> => {
     const w = wallet(walletType);
     const serviceKeys = buildServiceAccount(curConfig);
 
+    console.log({rpcmsa: providerApi.rpc.msa})
     let serviceMsaId = await providerApi.rpc.msa.getMsaId(serviceKeys.publicKey);
     if (!serviceMsaId) {
         createMsaForProvider(
