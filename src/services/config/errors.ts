@@ -73,3 +73,12 @@ export class MissingServiceKeyConfigError extends ConfigError {
     super("Service key is not set.");
   }
 }
+
+/** MissingServiceMsaIdConfigError indicates that the MSA Service ID config is not set.
+ *
+ */
+export class MissingServiceMsaIdConfigError extends ConfigError {
+  constructor() {
+    super("Service MSA ID is not set.");
+  }
+}

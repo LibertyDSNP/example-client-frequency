@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dsnp/mrc-rpc": "^0.0.0-062dac",
     "@polkadot/api": "^8.7.1",
     "@polkadot/extension-dapp": "^0.44.1",
     "@polkadot/typegen": "^8.7.1",
@@ -16,6 +17,7 @@
     "@types/react-dom": "^18.0.5",
     "antd": "^4.21.0",
     "bignumber": "^1.1.0",
+    "create-react-app": "^5.0.1",
     "dotenv": "^16.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

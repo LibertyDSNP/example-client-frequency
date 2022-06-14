@@ -1,10 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
-import {Button} from "antd";
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Main from "./components/Main";
+import * as wallet from "./services/wallets/wallet";
+import {setupProvider} from "./services/dsnpWrapper";
 
-const { ApiPromise, WsProvider } = require('@polkadot/api');
 
 function App() {
   return (

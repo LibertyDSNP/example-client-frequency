@@ -5,8 +5,8 @@ import {
   MissingFromIdConfigError,
   MissingProviderConfigError,
   MissingServiceKeyConfigError,
+  MissingServiceMsaIdConfigError,
   MissingSignerConfigError,
-  MissingStoreConfigError,
   MissingWalletConfigError,
 } from "./errors";
 import { Wallet } from "../wallets/wallet";
@@ -20,6 +20,8 @@ export interface Config {
   wallet?: Wallet;
   // service keys
   serviceKeys?: KeyringPair;
+  // service MSA ID
+  serviceMsaId?: number;
   // for interacting with chain
   providerApi?: ApiPromise;
   // file store
@@ -131,3 +133,15 @@ export const requireGetServiceKeys = (opts?: ConfigOpts): KeyringPair => {
   if (!serviceKey) throw new MissingServiceKeyConfigError();
   return serviceKey;
 };
+
+/** Get the Service MSA Id and if undefined, throw.
+ * @throw {@link MissingServiceMsaIdConfigError}
+ * Thrown if the Service MSA Id is not configured.
+ * @param opts - overrides for the current configuration
+ * @returns a never-undefined MSA Id (number)
+ */
+export const requireGetServiceMsaId = (opts?: ConfigOpts): number => {
+  const serviceMsaId = opts?.serviceMsaId || getConfig().serviceMsaId;
+  if (!serviceMsaId) throw new MissingServiceMsaIdConfigError();
+  return serviceMsaId;
+}

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
-import {Button, List} from "antd";
+import {Button, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
-import { updateConfig } from "../services/config";
-import { setupProviderApi} from "../services/chain";
+import { setupProvider } from "../services/dsnpWrapper";
+import {createAccountViaService} from "../services/chain/apis/extrinsic";
 
 const {ApiPromise, WsProvider} = require('@polkadot/api');
 // import {Button, Popover, Spin} from "antd";
@@ -16,6 +16,8 @@ const Main = (): JSX.Element => {
     const [walletAccounts, setWalletAccounts] = React.useState<wallet.AccountDetails[]>(
         []
     );
+    const [walletAddress, setWalletAddress] = React.useState<string>("");
+
     const [connectionLabel, setConnectionLabel] = useState<string>(
         "connecting..."
     );
@@ -37,18 +39,27 @@ const Main = (): JSX.Element => {
 
     const login = (addr: string) => {
         (async () => doLogin(addr))();
+        setWalletAddress(addr);
+    }
+
+    const registerMsa = () => {
+        (async () => {
+            try {
+                createAccountViaService(
+                    () => { console.log("success")},
+                    () => { console.error("fail")}
+                )
+            } catch (e) {
+                console.error(e);
+            }
+        })();
     }
 
     useEffect(() => {
         (async () => {
             try {
-                const providerHost = String(
-                    process.env.REACT_APP_CHAIN_HOST ||
-                    "wss://polkadot-node-1.liberti.social"
-                );
-                const api = await setupProviderApi(providerHost);
-                updateConfig({ providerApi: api });
-                setConnectionLabel("Connected to " + providerHost + " chain");
+                await setupProvider(walletType);
+                setConnectionLabel("Chain connected");
             } catch (e: any) {
                 console.error(e);
             }
@@ -56,7 +67,6 @@ const Main = (): JSX.Element => {
     });
 
     return <div>
-        <h3>{connectionLabel}</h3>
         {walletAccounts.length > 0 &&
             <List
                 dataSource={walletAccounts}
@@ -65,14 +75,24 @@ const Main = (): JSX.Element => {
                         <List.Item.Meta
                             title={acct.name}
                         />
-                        <p>Address: {acct.address}</p>
+                        {walletAddress === acct.address &&
+                            <Typography.Text>Logged in as&nbsp;</Typography.Text>
+                        }
+                        <Typography.Text>Address: {acct.address}</Typography.Text>
+                        {walletAddress === "" &&
+                            <Button onClick={() => login(acct.address) }>Login with this address</Button>
+                        }
                     </List.Item>
                     )}
             >
             </List>
         }
+        {walletAddress !== "" &&
+            <Button onClick={registerMsa}>Register MSA</Button>
+        }
         {!walletAccounts.length &&
             <Button onClick={connectWallet}>Connect Wallet</Button>}
+        <p>{connectionLabel}</p>
     </div>
 }
 export default Main;
