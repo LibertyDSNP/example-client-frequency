@@ -1,35 +1,69 @@
 @import '~antd/dist/antd.css';
 
 .App {
-  padding: 40px;
-  text-align: left;
+    padding: 40px;
+    text-align: left;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  min-height: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    min-height: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
+}
+
+.App .Header--title {
+    color: white;
 }
 
 .Main--addressList--walletAddress {
-  font-weight: bold;
+    font-weight: bold;
+    margin-right: 22px;
+}
+
+.Content {
+    margin-top: 22px;
+    min-height: 200px;
+    padding: 24px;
+    background: white;
+}
+
+.Footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Footer--chainConnectionState {
+    border-radius: 2px;
+    padding: 12px;
+}
+
+.Footer--chainConnectionState.connected {
+    background: #23de8a;
+    color: white;
+}
+
+.walletConnectionState--connected {
+    border-radius: 2px;
+    padding: 12px;
+    background: #23de8a;
+    color: white;
 }

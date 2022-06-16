@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import Main from "./components/Main";
-import * as wallet from "./services/wallets/wallet";
-import {setupProvider} from "./services/dsnpWrapper";
-
+import {Layout, Menu} from "antd";
+import {Typography} from "antd";
 
 function App() {
   return (
-    <div className="App">
-      <Main />
-    </div>
+    <Main />
   );
 }
 
