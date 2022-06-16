@@ -30,3 +30,6 @@
   color: #61dafb;
 }
 
+.Main--addressList--walletAddress {
+  font-weight: bold;
+}

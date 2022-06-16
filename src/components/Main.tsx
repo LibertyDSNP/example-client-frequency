@@ -4,6 +4,8 @@ import * as wallet from "../services/wallets/wallet";
 import { setupProvider } from "../services/dsnpWrapper";
 import {createAccountViaService} from "../services/chain/apis/extrinsic";
 
+const { Text } = Typography;
+
 const {ApiPromise, WsProvider} = require('@polkadot/api');
 // import {Button, Popover, Spin} from "antd";
 // import {Registration} from "../services/dsnp";
@@ -16,6 +18,8 @@ const Main = (): JSX.Element => {
     const [walletAccounts, setWalletAccounts] = React.useState<wallet.AccountDetails[]>(
         []
     );
+    // nyah, "TS2737: BigInt literals are not available when targeting lower than ES2020." :P
+    const [msaId, setMsaId] = React.useState<bigint>(0n);
     const [walletAddress, setWalletAddress] = React.useState<string>("");
 
     const [connectionLabel, setConnectionLabel] = useState<string>(
@@ -39,8 +43,18 @@ const Main = (): JSX.Element => {
 
     const login = (addr: string) => {
         (async () => doLogin(addr))();
+
         setWalletAddress(addr);
     }
+
+    const doLogout = async() => {
+        await wallet.wallet(walletType).logout();
+    }
+    const logout = () => {
+        (async () => doLogout())();
+        setWalletAddress("");
+    }
+
 
     const registerMsa = () => {
         (async () => {
@@ -76,11 +90,18 @@ const Main = (): JSX.Element => {
                             title={acct.name}
                         />
                         {walletAddress === acct.address &&
-                            <Typography.Text>Logged in as&nbsp;</Typography.Text>
+                            <div>
+                                <Text>Logged in as </Text>
+                                <Text strong className="Main--addressList--walletAddress">{acct.address}</Text>
+                                <Button type="primary" onClick={() => logout()}>logout</Button>
+                            </div>
                         }
-                        <Typography.Text>Address: {acct.address}</Typography.Text>
                         {walletAddress === "" &&
-                            <Button onClick={() => login(acct.address) }>Login with this address</Button>
+                            <div>
+                                <Text>Address: </Text>
+                                <Text strong className="Main--addressList--walletAddress">{acct.address}</Text>
+                                <Button type="primary" onClick={() => login(acct.address) }>Login with this address</Button>
+                            </div>
                         }
                     </List.Item>
                     )}
@@ -92,7 +113,8 @@ const Main = (): JSX.Element => {
         }
         {!walletAccounts.length &&
             <Button onClick={connectWallet}>Connect Wallet</Button>}
-        <p>{connectionLabel}</p>
+        {walletAccounts.length > 0 && <Text type={"success"}>Wallet connected</Text> }
+        <Text>{ connectionLabel}</Text>
     </div>
 }
 export default Main;

@@ -38,12 +38,10 @@ export function hexToBytes(hex: string): number[] {
 export function scaleEncode(data: DelegateData): string {
   const permission = bnToHex(bnToBn(data.permission), {
     bitLength: 8,
-    isLe: true,
   });
   console.log("permission", permission);
   const account = bnToHex(bnToBn(data.authorizedMsaId), {
     bitLength: 32,
-    isLe: true,
   }).substr(2);
   console.log("account: ", account)
   return permission + account;

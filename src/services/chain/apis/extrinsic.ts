@@ -1,15 +1,12 @@
 import {
-  requireGetProviderApi,
-  requireGetServiceKeys, requireGetServiceMsaId,
-  requireGetSigner,
-  requireGetWallet,
+    requireGetProviderApi,
+    requireGetServiceKeys,
+    requireGetServiceMsaId,
+    requireGetSigner,
+    requireGetWallet,
 } from "../../config";
-import {
-  DsnpCallback,
-  scaleEncode,
-  DsnpErrorCallback, DelegateData,
-} from "./common";
-import { SignerPayloadRaw } from "@polkadot/types/types";
+import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncode,} from "./common";
+import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -51,62 +48,66 @@ import {KeyringPair} from "@polkadot/keyring/types";
  * @param errorCallback to run on error
  */
 export const createAccountViaService = async (
-  callback: DsnpCallback,
-  errorCallback: DsnpErrorCallback
+    callback: DsnpCallback,
+    errorCallback: DsnpErrorCallback
 ): Promise<void> => {
-  const api = requireGetProviderApi();
-  const serviceKey = requireGetServiceKeys();
-  const signer = await requireGetSigner(); // this does the right thing, as documented
-  const wallet = await requireGetWallet();
-  const serviceMsaId = requireGetServiceMsaId();
+    const api = requireGetProviderApi();
+    const serviceKey = requireGetServiceKeys();
+    const signer = await requireGetSigner(); // this does the right thing, as documented
+    const wallet = await requireGetWallet();
+    const serviceMsaId = requireGetServiceMsaId();
 
-  const addProviderPayload: DelegateData = {
-    authorizedMsaId: serviceMsaId,
-    permission: 0,
-  };
-  const encodedPayload = scaleEncode(addProviderPayload);
-  console.log({encodedPayload});
+    console.log({serviceMsaId});
 
-  const signRawCall = signer?.signRaw;
-  if (!signRawCall) throw new Error("Error in signer");
+    const addProviderPayload: DelegateData = {
+        authorizedMsaId: serviceMsaId,
+        permission: 0n,
+    };
+    const encodedPayload = scaleEncode(addProviderPayload);
 
-  let delegatorKey = wallet.getAddress();
+    const signRawCall = signer?.signRaw;
+    if (!signRawCall) throw new Error("Error in signer");
 
-  console.log("about to call SignRawCall");
-  const result = await signRawCall({
-    address: wallet.getAddress(),
-    data: encodedPayload,
-    type: "bytes",
-  } as SignerPayloadRaw);
+    let delegatorKey = wallet.getAddress();
 
-  let proof = result.signature;
-  console.log("proof", proof)
-  const extrinsic = api.tx.msa.createSponsoredAccountWithDelegation(
-    delegatorKey,
-    proof,
-    addProviderPayload
-  );
+    const result = await signRawCall({
+        address: wallet.getAddress(),
+        data: encodedPayload,
+        type: "bytes",
+    } as SignerPayloadRaw);
 
-  extrinsic
-    ?.signAndSend(serviceKey, ({ status, events }) => {
-      callback(status, events);
-    })
-    .catch((error: any) => {
-      errorCallback(error);
-    });
+    let proof = {
+        Sr25519: result.signature,
+    };
+    console.log(proof);
+    const extrinsic = api.tx.msa.createSponsoredAccountWithDelegation(
+        delegatorKey,
+        proof,
+        addProviderPayload
+    );
+
+    extrinsic
+        ?.signAndSend(serviceKey, {nonce: -1},
+            ({status, events, }) => {
+            callback(status, events);
+        })
+        .catch((error: any) => {
+            errorCallback(error);
+        });
 };
 
-export const createMsaForProvider = (  callback: DsnpCallback,
-                                       errorCallback: DsnpErrorCallback
+export const createMsaForProvider = (callback: DsnpCallback,
+                                     errorCallback: DsnpErrorCallback
 ) => {
-  const api = requireGetProviderApi();
-  const serviceKeys: KeyringPair = requireGetServiceKeys();
-  const extrinsic = api.tx.msa.create();
-  extrinsic
-      ?.signAndSend(serviceKeys, ({ status, events }) => {
-      callback(status, events);
-  })
-  .catch((error: any) => {
-    errorCallback(error);
-  });
+    const api = requireGetProviderApi();
+    const serviceKeys: KeyringPair = requireGetServiceKeys();
+    const extrinsic = api.tx.msa.create();
+    extrinsic
+        ?.signAndSend(serviceKeys, {nonce: -1},
+            ({status, events}) => {
+            callback(status, events);
+        })
+        .catch((error: any) => {
+            errorCallback(error);
+        });
 }

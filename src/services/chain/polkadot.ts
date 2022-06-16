@@ -9,10 +9,10 @@ import {Config} from "../config";
 const DefaultWsProvider = new WsProvider(process.env.REACT_APP_CHAIN_HOST);
 
 export const setupProviderApi = async (config: Config, providerHost: string = ''): Promise<ApiPromise> => {
-    console.log("setupProviderApi")
     if (config.providerApi) {
         return config.providerApi;
     }
+    console.log("setupProviderApi")
     const wsProvider =
         providerHost !== "" ? new WsProvider(providerHost) : DefaultWsProvider;
     config.providerApi = await ApiPromise.create({

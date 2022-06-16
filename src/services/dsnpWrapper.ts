@@ -1,8 +1,9 @@
 import { setupProviderApi } from "./chain";
-import { Config, setConfig,getConfig } from "./config";
+import {Config, setConfig, getConfig, updateConfig} from "./config";
 import { wallet, WalletType } from "./wallets/wallet";
 import { buildServiceAccount } from "./chain/buildServiceAccount";
 import { createMsaForProvider } from "./chain/apis/extrinsic";
+import {Option, U32} from "@polkadot/types-codec"
 
 /**
  * setupProvider initializes the DSNP sdk with a chain provider.
@@ -18,24 +19,28 @@ export const setupProvider = async (walletType: WalletType): Promise<void> => {
     const providerApi = await setupProviderApi(curConfig, providerHost);
     const w = wallet(walletType);
     const serviceKeys = buildServiceAccount(curConfig);
-
-    console.log({rpcmsa: (providerApi.rpc as any).msa})
-    let serviceMsaId = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
-    if (!serviceMsaId) {
-        createMsaForProvider(
-            ()  => {
-                console.log("createdMSA");
-            },
-            () => console.error("failed to create MSA")
-        )
-    }
     const conf: Config = {
         ...curConfig,
         wallet: w,
         serviceKeys,
         providerApi,
-        serviceMsaId,
     };
-
     setConfig(conf);
+
+    let maybeServiceMsaId: Option<U32> = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
+    if (maybeServiceMsaId.isEmpty) {
+        createMsaForProvider(
+            async ()  => {
+                maybeServiceMsaId = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
+            },
+            (error) => {
+                alert("Could not create MSA " + error.message);
+            }
+        )
+    }
+    console.log("maybeServiceMsaId: ",  maybeServiceMsaId.value.toString());
+
+    let serviceMsaId: bigint = maybeServiceMsaId.value.toBigInt();
+    conf.serviceMsaId = serviceMsaId;
+    updateConfig(conf);
 };

@@ -54,7 +54,7 @@ export class SingleAccountSigner implements Signer {
       address === this.#keyringPair.address,
       "Signer does not have the keyringPair"
     );
-
+    console.log("in singleAccountSinger#signRaw?")
     return new Promise((resolve): void => {
       setTimeout((): void => {
         const signature = u8aToHex(this.#keyringPair.sign(hexToU8a(data)));

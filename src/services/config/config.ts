@@ -21,7 +21,7 @@ export interface Config {
   // service keys
   serviceKeys?: KeyringPair;
   // service MSA ID
-  serviceMsaId?: number;
+  serviceMsaId?: bigint; // TODO:  getting this is returning the literal type instead of the value???
   // for interacting with chain
   providerApi?: ApiPromise;
   // file store
@@ -140,7 +140,7 @@ export const requireGetServiceKeys = (opts?: ConfigOpts): KeyringPair => {
  * @param opts - overrides for the current configuration
  * @returns a never-undefined MSA Id (number)
  */
-export const requireGetServiceMsaId = (opts?: ConfigOpts): number => {
+export const requireGetServiceMsaId = (opts?: ConfigOpts): bigint => {
   const serviceMsaId = opts?.serviceMsaId || getConfig().serviceMsaId;
   if (!serviceMsaId) throw new MissingServiceMsaIdConfigError();
   return serviceMsaId;
