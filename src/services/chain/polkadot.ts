@@ -12,7 +12,6 @@ export const setupProviderApi = async (config: Config, providerHost: string = ''
     if (config.providerApi) {
         return config.providerApi;
     }
-    console.log("setupProviderApi")
     const wsProvider =
         providerHost !== "" ? new WsProvider(providerHost) : DefaultWsProvider;
     config.providerApi = await ApiPromise.create({

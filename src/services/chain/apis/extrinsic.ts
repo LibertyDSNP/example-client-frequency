@@ -8,6 +8,9 @@ import {
 import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncode,} from "./common";
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
+import { signatureVerify } from "@polkadot/util-crypto";
+import { stringToHex } from "@polkadot/util";
+
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
 
@@ -57,38 +60,48 @@ export const createAccountViaService = async (
     const wallet = await requireGetWallet();
     const serviceMsaId = requireGetServiceMsaId();
 
-    console.log({serviceMsaId});
-
-    const addProviderPayload: DelegateData = {
+    const data: DelegateData = {
         authorizedMsaId: serviceMsaId,
         permission: 0n,
     };
-    const encodedPayload = scaleEncode(addProviderPayload);
 
-    const signRawCall = signer?.signRaw;
-    if (!signRawCall) throw new Error("Error in signer");
+    const signRaw = signer?.signRaw;
+    if (!signRaw) throw new Error("Error in signer");
 
-    let delegatorKey = wallet.getAddress();
+    let walletAddress = wallet.getAddress();
 
-    const result = await signRawCall({
-        address: wallet.getAddress(),
-        data: encodedPayload,
+    let encoded = scaleEncode(data);
+    // let encoded = stringToHex(data.toString())
+    console.log({encoded});
+
+    const result = await signRaw({
+        address: walletAddress,
+        data:  encoded,
         type: "bytes",
     } as SignerPayloadRaw);
 
-    let proof = {
-        Sr25519: result.signature,
-    };
-    console.log(proof);
+    // This verifies
+    // const { isValid } = signatureVerify(scaleEncode(data), result.signature, walletAddress);
+    // console.log("Signature is locally valid? ", isValid);
+
     const extrinsic = api.tx.msa.createSponsoredAccountWithDelegation(
-        delegatorKey,
-        proof,
-        addProviderPayload
+        walletAddress,
+        {
+            Sr25519: result.signature,
+        } ,
+        data,
     );
 
+    // nonce: -1 is needed in latest versions - see
+    // https://substrate.stackexchange.com/questions/1776/how-to-use-polkadot-api-to-send-multiple-transactions-simultaneously
     extrinsic
         ?.signAndSend(serviceKey, {nonce: -1},
             ({status, events, }) => {
+                if (status.isInBlock) {
+                    console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+                } else {
+                    console.log(`Current status: ${status.type}`);
+                }
             callback(status, events);
         })
         .catch((error: any) => {

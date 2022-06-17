@@ -1,15 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
-import {setupProvider} from "../services/dsnpWrapper";
+import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService} from "../services/chain/apis/extrinsic";
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
-
-const {ApiPromise, WsProvider} = require('@polkadot/api');
-// import {Button, Popover, Spin} from "antd";
-// import {Registration} from "../services/dsnp";
 
 
 const Main = (): JSX.Element => {
@@ -17,6 +13,7 @@ const Main = (): JSX.Element => {
         []
     );
     const [msaId, setMsaId] = React.useState<bigint>(0n);
+    const [serviceMsaId, setServiceMsaId] = React.useState<bigint>(0n);
     const [walletAddress, setWalletAddress] = React.useState<string>("");
 
     const [connectionLabel, setConnectionLabel] = useState<string>(
@@ -38,8 +35,14 @@ const Main = (): JSX.Element => {
         (async () => doConnectWallet())();
     }
 
+    const getAndSetMsaId = async() => {
+        let msa_id = await getMsaId(wallet.wallet(walletType));
+        if (msa_id !== undefined) setMsaId(msa_id);
+    }
+
     const doLogin = async (addr: string) => {
         await wallet.wallet(walletType).login(addr);
+        await getAndSetMsaId();
     }
 
     const login = (addr: string) => {
@@ -53,6 +56,7 @@ const Main = (): JSX.Element => {
     }
     const logout = () => {
         (async () => doLogout())();
+        setMsaId(0n);
         setWalletAddress("");
     }
 
@@ -61,8 +65,8 @@ const Main = (): JSX.Element => {
         (async () => {
             try {
                 createAccountViaService(
-                    () => {
-                        console.log("success")
+                    async () => {
+                        await getAndSetMsaId();
                     },
                     () => {
                         console.error("fail")
@@ -77,7 +81,8 @@ const Main = (): JSX.Element => {
     useEffect(() => {
         (async () => {
             try {
-                await setupProvider(walletType);
+                let serviceMsaId = await setupChainAndServiceProviders(walletType);
+                setServiceMsaId(serviceMsaId);
                 setConnectionLabel("Chain connected");
                 setChainConnectionClass("Footer--chainConnectionState connected");
             } catch (e: any) {
@@ -102,7 +107,10 @@ const Main = (): JSX.Element => {
                             {walletAddress === acct.address &&
                                 <div className="WalletList--walletRow">
                                     <Text>Logged in as </Text>
-                                    <Text strong className="Main--addressList--walletAddress">{acct.address} </Text>
+                                    {msaId !== 0n &&
+                                        <Text>MSA Id: {msaId.toString()} </Text>
+                                    }
+                                    <Text strong className="Main--addressList--walletAddress">Address: {acct.address} </Text>
                                     <Button type="primary" onClick={() => logout()}>logout</Button>
                                 </div>
                             }
@@ -111,7 +119,7 @@ const Main = (): JSX.Element => {
                                     <Text>Address: </Text>
                                     <Text strong className="Main--addressList--walletAddress">{acct.address}</Text>
                                     <Button type="primary" onClick={() => login(acct.address)}>Login with this
-                                        address</Button>
+                                        account</Button>
                                 </div>
                             }
                         </List.Item>
@@ -119,7 +127,10 @@ const Main = (): JSX.Element => {
                 >
                 </List>
             }
-            {walletAddress !== "" &&
+            {walletAccounts.length === 0 &&
+                <Title level={3}>Wallet is not connected yet.</Title>
+            }
+            {walletAddress !== "" && msaId === 0n &&
                 <Button onClick={registerMsa}>Register MSA</Button>
             }
         </Content>
@@ -127,6 +138,9 @@ const Main = (): JSX.Element => {
             {!walletAccounts.length &&
                 <Button onClick={connectWallet}>Connect Wallet</Button>}
             {walletAccounts.length > 0 && <Text className="walletConnectionState--connected">Wallet connected</Text>}
+            {serviceMsaId !== 0n &&
+                <Text className={chainConnectionClass}>{"Service MSA ID: " + serviceMsaId.toString()}</Text>
+            }
             <Text className={chainConnectionClass}>{connectionLabel}</Text>
         </Footer>
     </Layout>

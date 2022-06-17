@@ -37,7 +37,6 @@ export const dotWallet: Wallet = {
         throw new Error(address + " does not exists in current wallet");
       currentAccount = allAccounts[index];
     }
-    console.log("logged in with address ", address);
   },
 
   logout: (): void => {

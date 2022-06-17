@@ -8,7 +8,6 @@ import { Config } from "../config";
  */
 export const buildServiceAccount = (curConfig: Config): KeyringPair => {
     if (curConfig?.serviceKeys) return curConfig.serviceKeys;
-    console.log("setting up keys for buildServiceAccount");
     const keyring = new Keyring();
     if (process.env.REACT_APP_SERVICE_SECRET_SEED) {
         return keyring.addFromUri(
