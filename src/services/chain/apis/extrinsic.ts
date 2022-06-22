@@ -8,7 +8,6 @@ import {
 import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,} from "./common";
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
-import {signatureVerify} from "@polkadot/util-crypto";
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -70,19 +69,12 @@ export const createAccountViaService = async (
     let walletAddress = wallet.getAddress();
 
     let encoded = scaleEncodeDelegateData(data);
-    // let encoded = stringToHex(data.toString())
-    console.log({encoded});
 
     const result = await signRaw({
         address: walletAddress,
         data: encoded,
         type: "bytes",
     } as SignerPayloadRaw);
-
-    // This verifies
-    const {isValid} = signatureVerify(scaleEncodeDelegateData(data), result.signature, walletAddress);
-    console.log("signature: ", result.signature);
-    console.log("Signature is locally valid? ", isValid);
 
     const extrinsic = api.tx.msa.createSponsoredAccountWithDelegation(
         walletAddress,

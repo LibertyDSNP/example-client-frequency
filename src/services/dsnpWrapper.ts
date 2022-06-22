@@ -4,8 +4,6 @@ import {Wallet, wallet, WalletType} from "./wallets/wallet";
 import { buildServiceAccount } from "./chain/buildServiceAccount";
 import { createMsaForProvider } from "./chain/apis/extrinsic";
 import {Option, U32} from "@polkadot/types-codec"
-const { decodeAddress, encodeAddress } = require('@polkadot/keyring');
-const { hexToU8a, isHex } = require('@polkadot/util');
 
 /**
  * setupChainAndServiceProviders initializes the DSNP sdk with a chain provider and
@@ -42,7 +40,7 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
         )
     }
 
-    let serviceMsaId: bigint = maybeServiceMsaId.value.toBigInt();
+    let serviceMsaId: bigint = BigInt(maybeServiceMsaId.value.toString());
     conf.serviceMsaId = serviceMsaId;
     updateConfig(conf);
     return serviceMsaId;
