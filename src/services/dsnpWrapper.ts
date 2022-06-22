@@ -4,8 +4,6 @@ import {Wallet, wallet, WalletType} from "./wallets/wallet";
 import { buildServiceAccount } from "./chain/buildServiceAccount";
 import { createMsaForProvider } from "./chain/apis/extrinsic";
 import {Option, U32} from "@polkadot/types-codec"
-const { decodeAddress, encodeAddress } = require('@polkadot/keyring');
-const { hexToU8a, isHex } = require('@polkadot/util');
 
 /**
  * setupChainAndServiceProviders initializes the DSNP sdk with a chain provider and
@@ -16,8 +14,7 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     let curConfig: Config = await getConfig();
 
     const providerHost = String(
-        process.env.REACT_APP_CHAIN_HOST ||
-        "wss://polkadot-node-1.liberti.social"
+        process.env.REACT_APP_CHAIN_HOST
     );
     const providerApi = await setupProviderApi(curConfig, providerHost);
     const w = wallet(walletType);
@@ -30,10 +27,11 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     };
     setConfig(conf);
 
+    // querying this rpc endpoint responds with a PolkadotJS version of rust's Option
     let maybeServiceMsaId: Option<U32> = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
     if (maybeServiceMsaId.isEmpty) {
-        createMsaForProvider(
-            async ()  => {
+        await createMsaForProvider(
+            async (status, events)  => {
                 maybeServiceMsaId = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
             },
             (error) => {
@@ -42,7 +40,7 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
         )
     }
 
-    let serviceMsaId: bigint = maybeServiceMsaId.value.toBigInt();
+    let serviceMsaId: bigint = BigInt(maybeServiceMsaId.value.toString());
     conf.serviceMsaId = serviceMsaId;
     updateConfig(conf);
     return serviceMsaId;
