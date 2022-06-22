@@ -3,7 +3,8 @@ import { KeyringPair } from "@polkadot/keyring/types";
 import { Config } from "../config";
 
 /**
- * buildServiceAccount returns the REACT_APP_SERVICE_SECRET_SEED
+ * buildServiceAccount uses the REACT_APP_SERVICE_SECRET_SEED to set up an account
+ * Keyapair to use as a Provider
  * @returns the Keypair for service
  */
 export const buildServiceAccount = (curConfig: Config): KeyringPair => {

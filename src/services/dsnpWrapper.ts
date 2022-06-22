@@ -16,8 +16,7 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     let curConfig: Config = await getConfig();
 
     const providerHost = String(
-        process.env.REACT_APP_CHAIN_HOST ||
-        "wss://polkadot-node-1.liberti.social"
+        process.env.REACT_APP_CHAIN_HOST
     );
     const providerApi = await setupProviderApi(curConfig, providerHost);
     const w = wallet(walletType);
@@ -30,10 +29,11 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     };
     setConfig(conf);
 
+    // querying this rpc endpoint responds with a PolkadotJS version of rust's Option
     let maybeServiceMsaId: Option<U32> = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
     if (maybeServiceMsaId.isEmpty) {
-        createMsaForProvider(
-            async ()  => {
+        await createMsaForProvider(
+            async (status, events)  => {
                 maybeServiceMsaId = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
             },
             (error) => {
