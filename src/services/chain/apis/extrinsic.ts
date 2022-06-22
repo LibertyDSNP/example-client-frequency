@@ -5,7 +5,7 @@ import {
     requireGetSigner,
     requireGetWallet,
 } from "../../config";
-import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncode,} from "./common";
+import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,} from "./common";
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
 import {signatureVerify} from "@polkadot/util-crypto";
@@ -69,7 +69,7 @@ export const createAccountViaService = async (
 
     let walletAddress = wallet.getAddress();
 
-    let encoded = scaleEncode(data);
+    let encoded = scaleEncodeDelegateData(data);
     // let encoded = stringToHex(data.toString())
     console.log({encoded});
 
@@ -80,7 +80,7 @@ export const createAccountViaService = async (
     } as SignerPayloadRaw);
 
     // This verifies
-    const {isValid} = signatureVerify(scaleEncode(data), result.signature, walletAddress);
+    const {isValid} = signatureVerify(scaleEncodeDelegateData(data), result.signature, walletAddress);
     console.log("signature: ", result.signature);
     console.log("Signature is locally valid? ", isValid);
 

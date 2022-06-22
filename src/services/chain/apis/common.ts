@@ -35,16 +35,16 @@ export function hexToBytes(hex: string): number[] {
   return bytes;
 }
 
-export function scaleEncode(data: DelegateData): string {
+export function scaleEncodeDelegateData(data: DelegateData): string {
   const permission = bnToHex(bnToBn(data.permission), {
     bitLength: 8,
     isLe: true,
-  });
-  const account = bnToHex(bnToBn(data.authorizedMsaId), {
-    bitLength: 32,
-    isLe: true,
   }).substr(2);
-  return permission + account;
+  const authorizedMsaId = bnToHex(bnToBn(data.authorizedMsaId), {
+    bitLength: 64,
+    isLe: true,
+  });
+  return authorizedMsaId + permission;
 }
 
 export const getEventName = (ev: Record<string, AnyJson>): string =>
