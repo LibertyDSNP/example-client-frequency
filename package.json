@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dsnp/mrc-rpc": "^0.0.0-062dac",
-    "@polkadot/api": "^8.7.1",
+    "@dsnp/frequency-api-augment": "0.0.0-2d95b1",
+    "@polkadot/api": "^8.11.3",
     "@polkadot/extension-dapp": "^0.44.1",
-    "@polkadot/typegen": "^8.7.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -30,11 +29,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "generate": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package ../interfaces --input src/services/chain/interfaces",
-    "generate:edge": "curl -H \"Content-Type: application/\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' http://localhost:11936 > edgeware.json",
-    "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package sample-polkadotjs-typegen/interfaces --input src/services/chain/interfaces --endpoint ./edgeware.json",
-    "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package sample-polkadotjs-typegen/interfaces --endpoint ./edgeware.json --output src/services/chain/interfaces"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

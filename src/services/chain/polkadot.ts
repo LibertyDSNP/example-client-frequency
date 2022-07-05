@@ -1,14 +1,11 @@
 // Import
-// https://polkadot.js.org/docs/api/FAQ/#since-upgrading-to-the-7x-series-typescript-augmentation-is-missing
-import "@polkadot/api-augment";
 import {ApiPromise, WsProvider} from "@polkadot/api";
-// import  * as AugmentedLocalApis from "./interfaces"
-import {rpc, types} from "@dsnp/mrc-rpc";
+import {options} from "@dsnp/frequency-api-augment";
 import {Config} from "../config";
 
 const DefaultWsProvider = new WsProvider(process.env.REACT_APP_CHAIN_HOST);
 
-export const setupProviderApi = async (config: Config, providerHost: string = ''): Promise<ApiPromise> => {
+export const setupProviderApi = async (config: Config, providerHost: string = '') => {
     if (config.providerApi) {
         return config.providerApi;
     }
@@ -16,8 +13,7 @@ export const setupProviderApi = async (config: Config, providerHost: string = ''
         providerHost !== "" ? new WsProvider(providerHost) : DefaultWsProvider;
     config.providerApi = await ApiPromise.create({
         provider: wsProvider,
-        types,
-        rpc,
+        ...options,
     });
     return config.providerApi;
 };
