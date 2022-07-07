@@ -93,7 +93,7 @@ const Main = (): JSX.Element => {
 
     return <Layout className="App">
         <Header>
-            <Title level={2} className="Header--title">Polkadot.js + MRC</Title>
+            <Title level={2} className="Header--title">Polkadot.js + Frequency</Title>
         </Header>
         <Content className="Content">
             {walletAccounts.length > 0 &&

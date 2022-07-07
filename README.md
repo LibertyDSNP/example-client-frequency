@@ -8,8 +8,8 @@ But it uses yarn instead of npm.
 * Make sure [yarn is installed](https://classic.yarnpkg.com/en/docs/getting-started)
 * Clone this repo
 * `yarn install`
-* Follow instructions for [building and starting Frequency](https://github.com/LibertyDSNP/mrc)
-* `cp .env.sample .env` and then edit `.env` to reflect what chain to connect to and what secret key to use for a Provider. 
+* Follow instructions for [building and starting Frequency](https://github.com/LibertyDSNP/frequency)
+* `cp .env.sample .env` and then edit `.env` to reflect what chain to connect to and what secret key to use for a Provider.
 It's fine if it is not already registered as an MSA; the app will register for you automatically.
 * Make sure the collators and relay chain you have configured are running.
 * `yarn start`
