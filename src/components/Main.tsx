@@ -3,6 +3,7 @@ import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService} from "../services/chain/apis/extrinsic";
+import {fetchAllActiveSchema} from "../services/chain/apis/extrinsic";
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -33,6 +34,14 @@ const Main = (): JSX.Element => {
 
     const connectWallet = () => {
         (async () => doConnectWallet())();
+    }
+
+    const doRegisterSchema = async () => {
+
+    }
+
+    const registerSchema = () => {
+        (async () => doRegisterSchema())();
     }
 
     const getAndSetMsaId = async() => {
@@ -91,6 +100,16 @@ const Main = (): JSX.Element => {
         })();
     });
 
+    const listActiveSchemas = () => {
+        (async () => {
+            try {
+                fetchAllActiveSchema()
+            } catch (e: any) {
+                console.error(e);
+            }
+        })
+    }
+
     return <Layout className="App">
         <Header>
             <Title level={2} className="Header--title">Polkadot.js + Frequency</Title>
@@ -126,6 +145,16 @@ const Main = (): JSX.Element => {
                     )}
                 >
                 </List>
+            }
+            {
+                <List
+                    dataSource={listActiveSchemas}
+                    renderItem={}
+
+                ></List>
+            }
+            {
+                <Button onClick={registerSchema}>Register Schema</Button>
             }
             {walletAccounts.length === 0 &&
                 <Title level={3}>Wallet is not connected yet.</Title>

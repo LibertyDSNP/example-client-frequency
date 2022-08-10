@@ -117,3 +117,23 @@ export const createMsaForProvider = async (callback: DsnpCallback,
             errorCallback(error);
         });
 }
+
+export const fetchAllActiveSchema = async () => {
+    const api = requireGetProviderApi();
+    const serviceKeys: KeyringPair = requireGetServiceKeys();
+
+    const extrinsic = api.tx.schemas.get_schema();
+    await extrinsic
+        ?.signAndSend(serviceKeys, {nonce: -1});
+
+};
+
+export const registerSchema = async () => {
+    const api = requireGetProviderApi();
+    const serviceKeys: KeyringPair = requireGetServiceKeys();
+    // instantiate the extrinsic object
+    const extrinsic = api.tx.schemas.registerSchema();
+
+    await extrinsic?.signAndSend(serviceKeys, {nonce: -1})
+
+};
