@@ -128,12 +128,21 @@ export const fetchAllActiveSchema = async () => {
 
 };
 
-export const registerSchema = async () => {
+// export const registerSchema = async () => {
+//     const api = requireGetProviderApi();
+//     const serviceKeys: KeyringPair = requireGetServiceKeys();
+//     // instantiate the extrinsic object
+//     const extrinsic = api.tx.schemas.registerSchema();
+
+//     await extrinsic?.signAndSend(serviceKeys, {nonce: -1})
+
+// };
+
+export const getConstant = async () => {
     const api = requireGetProviderApi();
-    const serviceKeys: KeyringPair = requireGetServiceKeys();
-    // instantiate the extrinsic object
-    const extrinsic = api.tx.schemas.registerSchema();
 
-    await extrinsic?.signAndSend(serviceKeys, {nonce: -1})
+    const lastHeader = await api.rpc.chain.getHeader();
+    console.log("last header: {}", lastHeader);
+    return lastHeader;
 
-};
+}

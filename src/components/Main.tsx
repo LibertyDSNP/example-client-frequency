@@ -3,7 +3,8 @@ import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService} from "../services/chain/apis/extrinsic";
-import {fetchAllActiveSchema} from "../services/chain/apis/extrinsic";
+// import {fetchAllActiveSchema} from "../services/chain/apis/extrinsic";
+import {getConstant} from "../services/chain/apis/extrinsic";
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -94,21 +95,24 @@ const Main = (): JSX.Element => {
                 setServiceMsaId(serviceMsaId);
                 setConnectionLabel("Chain connected");
                 setChainConnectionClass("Footer--chainConnectionState connected");
+
+                let myfetch = await getConstant();
+                console.log(myfetch);
             } catch (e: any) {
                 console.error(e);
             }
         })();
     });
 
-    const listActiveSchemas = () => {
-        (async () => {
-            try {
-                fetchAllActiveSchema()
-            } catch (e: any) {
-                console.error(e);
-            }
-        })
-    }
+    // const listActiveSchemas = () => {
+    //     (async () => {
+    //         try {
+    //             fetchAllActiveSchema()
+    //         } catch (e: any) {
+    //             console.error(e);
+    //         }
+    //     })
+    // }
 
     return <Layout className="App">
         <Header>
@@ -146,13 +150,13 @@ const Main = (): JSX.Element => {
                 >
                 </List>
             }
-            {
+            {/* {
                 <List
                     dataSource={listActiveSchemas}
                     renderItem={}
 
                 ></List>
-            }
+            } */}
             {
                 <Button onClick={registerSchema}>Register Schema</Button>
             }
