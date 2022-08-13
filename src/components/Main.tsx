@@ -37,14 +37,6 @@ const Main = (): JSX.Element => {
         (async () => doConnectWallet())();
     }
 
-    const doRegisterSchema = async () => {
-
-    }
-
-    const registerSchema = () => {
-        (async () => doRegisterSchema())();
-    }
-
     const getAndSetMsaId = async() => {
         let msa_id = await getMsaId(wallet.wallet(walletType));
         if (msa_id !== undefined) setMsaId(msa_id);
@@ -96,23 +88,11 @@ const Main = (): JSX.Element => {
                 setConnectionLabel("Chain connected");
                 setChainConnectionClass("Footer--chainConnectionState connected");
 
-                let myfetch = await getConstant();
-                console.log(myfetch);
             } catch (e: any) {
                 console.error(e);
             }
         })();
     });
-
-    // const listActiveSchemas = () => {
-    //     (async () => {
-    //         try {
-    //             fetchAllActiveSchema()
-    //         } catch (e: any) {
-    //             console.error(e);
-    //         }
-    //     })
-    // }
 
     return <Layout className="App">
         <Header>
@@ -149,16 +129,6 @@ const Main = (): JSX.Element => {
                     )}
                 >
                 </List>
-            }
-            {/* {
-                <List
-                    dataSource={listActiveSchemas}
-                    renderItem={}
-
-                ></List>
-            } */}
-            {
-                <Button onClick={registerSchema}>Register Schema</Button>
             }
             {walletAccounts.length === 0 &&
                 <Title level={3}>Wallet is not connected yet.</Title>
