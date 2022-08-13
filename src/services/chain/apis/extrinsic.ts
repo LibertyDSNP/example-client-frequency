@@ -8,6 +8,7 @@ import {
 import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,} from "./common";
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
+import {ModelType, PayloadLocation} from "@dsnp/frequency-api-augment/interfaces/schemas/types";
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -118,25 +119,20 @@ export const createMsaForProvider = async (callback: DsnpCallback,
         });
 }
 
-export const fetchAllActiveSchema = async () => {
+export const registerSchema = async () => {
+    console.log("inside register schema");
     const api = requireGetProviderApi();
     const serviceKeys: KeyringPair = requireGetServiceKeys();
 
-    const extrinsic = api.tx.schemas.get_schema();
-    await extrinsic
-        ?.signAndSend(serviceKeys, {nonce: -1});
+    const staticSchema = `[ {"name":"Foo","column_type":"BOOLEAN","compression":"UNCOMPRESSED","bloom_filter":true} ]`;
+    const utf8Encode = new TextEncoder();
+    const byteArr = utf8Encode.encode(staticSchema);
+    console.log(byteArr);
+
+    const extrinsic =  api.tx.schemas.registerSchema(byteArr, 'AvroBinary', 'OnChain');
+    await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
 
 };
-
-// export const registerSchema = async () => {
-//     const api = requireGetProviderApi();
-//     const serviceKeys: KeyringPair = requireGetServiceKeys();
-//     // instantiate the extrinsic object
-//     const extrinsic = api.tx.schemas.registerSchema();
-
-//     await extrinsic?.signAndSend(serviceKeys, {nonce: -1})
-
-// };
 
 export const getConstant = async () => {
     const api = requireGetProviderApi();
