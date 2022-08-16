@@ -24,8 +24,6 @@ const Main = (): JSX.Element => {
         "Footer--chainConnectionState"
     )
 
-    const [schemaList, setSchemaList] = React.useState<Array<any>>([]);
-
     const walletType = wallet.WalletType.DOTJS
     const doConnectWallet = async () => {
         const w = wallet.wallet(walletType);
@@ -61,7 +59,6 @@ const Main = (): JSX.Element => {
         setMsaId(0n);
         setWalletAddress("");
     }
-
 
     const registerMsa = () => {
         (async () => {
@@ -180,9 +177,6 @@ const Main = (): JSX.Element => {
             }
             {
                 <Button onClick={listSchemas}>List Schemas</Button>
-            }
-            {
-                schemaList
             }
             {
                 <Button onClick={validateJson}>Validate Input</Button>
