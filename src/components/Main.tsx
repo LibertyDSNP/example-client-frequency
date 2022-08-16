@@ -109,9 +109,8 @@ const Main = (): JSX.Element => {
         addMessage(input, 1);
     }
 
-    const listSchemas = async () => {
-        let x = fetchAllSchemas();
-        setSchemaList(await x);
+    const listSchemas = () => {
+        fetchAllSchemas();
     }
 
     const listMessages = () => {
