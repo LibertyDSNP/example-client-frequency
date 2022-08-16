@@ -123,12 +123,14 @@ export const createMsaForProvider = async (callback: DsnpCallback,
 export const fetchAllSchemas = async () => {
     console.log("inside fetch schemas");
     const api = requireGetProviderApi();
-    const serviceKeys: KeyringPair = requireGetServiceKeys();
 
-    // hard code one schema for now
-    const schemaId = 1;
-    const schema = api.tx.schemas.get_schema_by_id(schemaId);
-    return schema.toString();
+
+    // const schemaId = api.rpc.schemas.getLatestSchemaId();
+    // console.log(schemaId.toString());
+
+    const schema = await api.rpc.schemas.getBySchemaId(1);
+    // console.log("schema {}", schema);
+
 
 }
 
@@ -137,12 +139,17 @@ export const registerSchema = async () => {
     const api = requireGetProviderApi();
     const serviceKeys: KeyringPair = requireGetServiceKeys();
 
-    const staticSchema = `[ {"name":"Foo","column_type":"BOOLEAN","compression":"UNCOMPRESSED","bloom_filter":true} ]`;
-    const utf8Encode = new TextEncoder();
-    const byteArr = utf8Encode.encode(staticSchema);
-    console.log(byteArr);
-
-    const extrinsic =  api.tx.schemas.registerSchema(byteArr, 'AvroBinary', 'OnChain');
+    const staticSchema =
+    `{
+        "type" : "record",
+        "namespace" : "Tutorialspoint",
+        "name" : "Employee",
+        "fields" : [
+           { "name" : "Name" , "type" : "string" },
+           { "name" : "Age" , "type" : "int" }
+        ]
+     }`
+    const extrinsic =  api.tx.schemas.registerSchema(staticSchema, 'AvroBinary' , 'OnChain');
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
 
 };
