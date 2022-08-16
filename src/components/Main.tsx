@@ -24,6 +24,8 @@ const Main = (): JSX.Element => {
         "Footer--chainConnectionState"
     )
 
+    const [schemaList, setSchemaList] = React.useState<Array<any>>([]);
+
     const walletType = wallet.WalletType.DOTJS
     const doConnectWallet = async () => {
         const w = wallet.wallet(walletType);
@@ -107,17 +109,15 @@ const Main = (): JSX.Element => {
         addMessage(input, 1);
     }
 
-    const listSchemas = () => {
-        console.log("list schemas");
-        fetchAllSchemas();
-        console.log("end list schemas");
     const listSchemas = async () => {
         let x = fetchAllSchemas();
+        setSchemaList(await x);
     }
 
     const listMessages = () => {
         getMessages(1);
     }
+
     useEffect(() => {
         (async () => {
             try {
@@ -181,6 +181,9 @@ const Main = (): JSX.Element => {
             }
             {
                 <Button onClick={listSchemas}>List Schemas</Button>
+            }
+            {
+                schemaList
             }
             {
                 <Button onClick={validateJson}>Validate Input</Button>
