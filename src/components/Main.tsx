@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
-import {createAccountViaService, registerSchema} from "../services/chain/apis/extrinsic";
+import {createAccountViaService, registerSchema, addMessage} from "../services/chain/apis/extrinsic";
 import {getConstant} from "../services/chain/apis/extrinsic";
 
 const {Header, Content, Footer} = Layout;
@@ -82,6 +82,19 @@ const Main = (): JSX.Element => {
     const doRegisterSchema = () => {
         console.log("register schema");
         registerSchema();
+
+    }
+
+    const validateJson = () => {
+        console.log("validate json");
+        // to do
+    }
+
+    const submitMessage = () => {
+        console.log("submit message");
+        let input = "this is a message";
+        addMessage(input);
+        console.log("sucess");
     }
 
     useEffect(() => {
@@ -140,8 +153,16 @@ const Main = (): JSX.Element => {
             {walletAddress !== "" && msaId === 0n &&
                 <Button onClick={registerMsa}>Register MSA</Button>
             }
+        </Content>
+        <Content>
             {
                 <Button onClick={doRegisterSchema}>Register Schema</Button>
+            }
+            {
+                <Button onClick={validateJson}>Validate Input</Button>
+            }
+            {
+                <Button onClick={submitMessage}>Submit Message</Button>
             }
         </Content>
         <Footer className="Footer">

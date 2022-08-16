@@ -9,6 +9,7 @@ import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,}
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
 import {ModelType, PayloadLocation} from "@dsnp/frequency-api-augment/interfaces/schemas/types";
+import { json } from "stream/consumers";
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -119,6 +120,18 @@ export const createMsaForProvider = async (callback: DsnpCallback,
         });
 }
 
+export const fetchAllSchemas = async () => {
+    console.log("inside fetch schemas");
+    const api = requireGetProviderApi();
+    const serviceKeys: KeyringPair = requireGetServiceKeys();
+
+    // hard code one schema for now
+    const schemaId = 1;
+    const schema = api.tx.schemas.get_schema_by_id(schemaId);
+    return schema.toString();
+
+}
+
 export const registerSchema = async () => {
     console.log("inside register schema");
     const api = requireGetProviderApi();
@@ -133,6 +146,15 @@ export const registerSchema = async () => {
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
 
 };
+
+export const addMessage = async (message: string) => {
+    console.log("inside add message");
+    const api = requireGetProviderApi();
+    const serviceKeys: KeyringPair = requireGetServiceKeys();
+
+    const extrinsic = api.tx.messages.addOnchainMessage(null, 1, message);
+    await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
+}
 
 export const getConstant = async () => {
     const api = requireGetProviderApi();
