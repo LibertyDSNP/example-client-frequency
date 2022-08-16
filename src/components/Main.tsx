@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
-import {createAccountViaService, registerSchema, addMessage} from "../services/chain/apis/extrinsic";
+import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, getMessages} from "../services/chain/apis/extrinsic";
 import {getConstant} from "../services/chain/apis/extrinsic";
 
 const {Header, Content, Footer} = Layout;
@@ -92,11 +92,25 @@ const Main = (): JSX.Element => {
 
     const submitMessage = () => {
         console.log("submit message");
-        let input = "this is a message";
+        let input =
+        `{
+            "name": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
+        }`
         addMessage(input);
-        console.log("sucess");
+        console.log("end submit message");
     }
 
+    const listSchemas = () => {
+        console.log("list schemas");
+        fetchAllSchemas();
+        console.log("end list schemas");
+    }
+
+    const listMessages = () => {
+        console.log("list messages");
+        getMessages();
+        console.log("end messages");
+    }
     useEffect(() => {
         (async () => {
             try {
@@ -159,10 +173,16 @@ const Main = (): JSX.Element => {
                 <Button onClick={doRegisterSchema}>Register Schema</Button>
             }
             {
+                <Button onClick={listSchemas}>List Schemas</Button>
+            }
+            {
                 <Button onClick={validateJson}>Validate Input</Button>
             }
             {
                 <Button onClick={submitMessage}>Submit Message</Button>
+            }
+            {
+                <Button onClick={listMessages}>List Messages</Button>
             }
         </Content>
         <Footer className="Footer">

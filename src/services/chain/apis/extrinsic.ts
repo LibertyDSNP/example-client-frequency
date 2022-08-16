@@ -124,14 +124,16 @@ export const fetchAllSchemas = async () => {
     console.log("inside fetch schemas");
     const api = requireGetProviderApi();
 
-
+    const schema_id = 5;
     // const schemaId = api.rpc.schemas.getLatestSchemaId();
     // console.log(schemaId.toString());
 
-    const schema = await api.rpc.schemas.getBySchemaId(1);
-    // console.log("schema {}", schema);
-
-
+    for (let i = 1; i <= schema_id; i++) {
+        try {
+            const schema: SchemaResponse  = await (await api.rpc.schemas.getBySchemaId(i)).unwrap();
+            console.log("schmea {}", schema.toJSON());
+        } catch {continue;}
+      }
 }
 
 export const registerSchema = async () => {
@@ -141,14 +143,16 @@ export const registerSchema = async () => {
 
     const staticSchema =
     `{
-        "type" : "record",
-        "namespace" : "Tutorialspoint",
-        "name" : "Employee",
-        "fields" : [
-           { "name" : "Name" , "type" : "string" },
-           { "name" : "Age" , "type" : "int" }
+        "type": "record",
+        "name": "User",
+        "fields": [
+            {"name": "name", "type": "string"},
+            {"name": "favorite_number", "type": "int"}
+            {"name": "favorite_restaurant", "type": "string"}
         ]
-     }`
+    }
+    `
+
     const extrinsic =  api.tx.schemas.registerSchema(staticSchema, 'AvroBinary' , 'OnChain');
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
 
@@ -161,6 +165,16 @@ export const addMessage = async (message: string) => {
 
     const extrinsic = api.tx.messages.addOnchainMessage(null, 1, message);
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
+}
+
+export const getMessages = async () => {
+    console.log("inside get message");
+    const api = requireGetProviderApi();
+
+    const messages = await api.rpc.messages.getBySchema(5, {from_block: 0, from_index: 0, to_block: 8, page_size: 1});
+
+    console.log("messages: {}", JSON.stringify(messages.content, null, ' '));
+
 }
 
 export const getConstant = async () => {
