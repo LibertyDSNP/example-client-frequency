@@ -94,8 +94,18 @@ const Main = (): JSX.Element => {
     }
 
     const validateJson = () => {
-        console.log("validate json");
-        // to do
+        const avro = require('avsc');
+        const recordType = avro.Type.forSchmea( {
+            type: 'record',
+            name: 'User',
+            fields: [
+                {name: 'name', type: 'string'},
+                {name:'favorite_number',type:'int'},
+                {name:'favorite_restaurant',type:'string'}
+            ]
+        });
+        const valid = recordType.isValid({ name:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'})
+        console.log("is valid? ", valid);
     }
 
     const submitMessage = () => {
