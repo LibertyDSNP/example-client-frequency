@@ -3,7 +3,6 @@ import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, getMessages} from "../services/chain/apis/extrinsic";
-import {getConstant} from "../services/chain/apis/extrinsic";
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -80,8 +79,18 @@ const Main = (): JSX.Element => {
     }
 
     const doRegisterSchema = () => {
-        console.log("register schema");
-        registerSchema();
+        const staticSchema =
+        `{
+            "type": "record",
+            "name": "User",
+            "fields": [
+                {"name": "name", "type": "string"},
+                {"name": "favorite_number", "type": "int"},
+                {"name": "favorite_restaurant", "type": "string"}
+            ]
+        }
+        `
+        registerSchema(staticSchema);
 
     }
 
@@ -91,25 +100,23 @@ const Main = (): JSX.Element => {
     }
 
     const submitMessage = () => {
-        console.log("submit message");
         let input =
         `{
             "name": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
         }`
-        addMessage(input);
-        console.log("end submit message");
+        addMessage(input, 1);
     }
 
     const listSchemas = () => {
         console.log("list schemas");
         fetchAllSchemas();
         console.log("end list schemas");
+    const listSchemas = async () => {
+        let x = fetchAllSchemas();
     }
 
     const listMessages = () => {
-        console.log("list messages");
-        getMessages();
-        console.log("end messages");
+        getMessages(1);
     }
     useEffect(() => {
         (async () => {
