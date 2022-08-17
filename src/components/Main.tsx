@@ -3,6 +3,7 @@ import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, getMessages} from "../services/chain/apis/extrinsic";
+import * as avro from "avsc";
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -94,8 +95,7 @@ const Main = (): JSX.Element => {
     }
 
     const validateJson = () => {
-        const avro = require('avsc');
-        const recordType = avro.Type.forSchmea( {
+        const recordType = avro.Type.forSchema( {
             type: 'record',
             name: 'User',
             fields: [
