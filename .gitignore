@@ -25,3 +25,4 @@ yarn-error.log*
 # repo-specific
 edgeware.json
 .env
+*.lock
