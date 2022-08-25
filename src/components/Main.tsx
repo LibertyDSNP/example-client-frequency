@@ -78,40 +78,41 @@ const Main = (): JSX.Element => {
         })();
     }
 
-    const doRegisterSchema = () => {
+    const doRegisterSchema = (input: string) => {
         const staticSchema =
         `{
-            "type": "record",
-            "name": "User",
-            "fields": [
-                {"name": "name", "type": "string"},
-                {"name": "favorite_number", "type": "int"},
-                {"name": "favorite_restaurant", "type": "string"}
+            type: 'record',
+            name: 'User',
+            fields: [
+                {name: 'nickname', type: 'string'},
+                {name:'favorite_number',type:'int'},
+                {name:'favorite_restaurant',type:'string'}
             ]
         }
         `
         registerSchema(staticSchema);
-
     }
 
-    const validateJson = () => {
-        const recordType = avro.Type.forSchema( {
+    const validateJson = (input: avro.Schema) => {
+        const x: avro.Schema =  {
             type: 'record',
             name: 'User',
             fields: [
-                {name: 'name', type: 'string'},
+                {name: 'nickname', type: 'string'},
                 {name:'favorite_number',type:'int'},
                 {name:'favorite_restaurant',type:'string'}
             ]
-        });
-        const valid = recordType.isValid({ name:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'})
+        };
+        // const read: avro.Schema = avro.readSchema(x);
+        const record: avro.Type = avro.Type.forSchema(input);
+        const valid = record.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'})
         console.log("is valid? ", valid);
     }
 
     const submitMessage = () => {
         let input =
         `{
-            "name": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
+            "nickname": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
         }`
         addMessage(input, 1);
     }
@@ -183,13 +184,21 @@ const Main = (): JSX.Element => {
         </Content>
         <Content>
             {
-                <Button onClick={doRegisterSchema}>Register Schema</Button>
+                <Button onClick={() => doRegisterSchema('placeholder')}>Register Schema</Button>
             }
             {
                 <Button onClick={listSchemas}>List Schemas</Button>
             }
             {
-                <Button onClick={validateJson}>Validate Input</Button>
+                <Button onClick={() => validateJson({
+                    type: 'record',
+                    name: 'User',
+                    fields: [
+                        {name: 'nickname', type: 'string'},
+                        {name:'favorite_number',type:'int'},
+                        {name:'favorite_restaurant',type:'string'}
+                    ]
+                })}>Validate Input</Button>
             }
             {
                 <Button onClick={submitMessage}>Submit Message</Button>
