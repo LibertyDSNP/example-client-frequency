@@ -88,7 +88,7 @@ export const createAccountViaService = async (
     // https://substrate.stackexchange.com/questions/1776/how-to-use-polkadot-api-to-send-multiple-transactions-simultaneously
     extrinsic
         ?.signAndSend(serviceKey, {nonce: -1},
-            ({status, events,}) => {
+            ({status, events}) => {
                 if (status.isInBlock) {
                     console.log(`Completed at block hash #${status.asInBlock.toString()}`);
                 } else {
@@ -122,8 +122,8 @@ export const fetchAllSchemas = async (): Promise<Array<any>> => {
     const api = requireGetProviderApi();
 
     const schema_id = 10;
-    // const schemaId = api.rpc.schemas.getLatestSchemaId("None")
-    // console.log(schemaId.toString());
+    const schemaId = api.rpc.schemas.getLatestSchemaId()
+    console.log(schemaId.toString());
 
     let returnList: Array<any> = [];
     for (let i = 1; i <= schema_id; i++) {
