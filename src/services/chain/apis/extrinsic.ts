@@ -121,14 +121,13 @@ export const createMsaForProvider = async (callback: DsnpCallback,
 export const fetchAllSchemas = async (): Promise<Array<any>> => {
     const api = requireGetProviderApi();
 
-    const schema_id = 10;
-    const schemaId = api.rpc.schemas.getLatestSchemaId()
-    console.log(schemaId.toString());
+    const schema_id = (api.rpc as any).schemas.getLatestSchemaId()
+    console.log(schema_id.toString());
 
     let returnList: Array<any> = [];
     for (let i = 1; i <= schema_id; i++) {
         try {
-            const schema = await (await api.rpc.schemas.getBySchemaId(i));
+            const schema = await (await (api.rpc as any).schemas.getBySchemaId(i));
             if (!schema.isEmpty) {
                 let s = schema.unwrap();
                 console.log("Schema ID %s, %s, Location: %s", s.schema_id, s.model_type, s.payload_location);
@@ -162,7 +161,7 @@ export const addMessage = async (message: string, schema_id: number) => {
 export const getMessages = async (schema_id: number) => {
     const api = requireGetProviderApi();
 
-    const messages = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
+    const messages = await (api.rpc as any).messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
 
     console.log("messages: {}", JSON.stringify(messages.content, null, ' '));
 
