@@ -25,6 +25,8 @@ const Main = (): JSX.Element => {
         "Footer--chainConnectionState"
     )
 
+    const [inputJsonMessage, setInputJsonMessage] = React.useState<string>();
+
     const walletType = wallet.WalletType.DOTJS
     const doConnectWallet = async () => {
         const w = wallet.wallet(walletType);
@@ -93,7 +95,11 @@ const Main = (): JSX.Element => {
         registerSchema(staticSchema);
     }
 
-    const validateJson = (input: avro.Schema) => {
+    const validateJson = () => {
+
+        // have to map this string to json type and then create the avro schema
+        console.log("input message", inputJsonMessage);
+
         const x: avro.Schema =  {
             type: 'record',
             name: 'User',
@@ -104,9 +110,13 @@ const Main = (): JSX.Element => {
             ]
         };
         // const read: avro.Schema = avro.readSchema(x);
-        const record: avro.Type = avro.Type.forSchema(input);
+        const record: avro.Type = avro.Type.forSchema(x);
         const valid = record.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'})
         console.log("is valid? ", valid);
+    }
+
+    const updateJsonMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputJsonMessage(event.target.value);
     }
 
     const submitMessage = () => {
@@ -190,15 +200,10 @@ const Main = (): JSX.Element => {
                 <Button onClick={listSchemas}>List Schemas</Button>
             }
             {
-                <Button onClick={() => validateJson({
-                    type: 'record',
-                    name: 'User',
-                    fields: [
-                        {name: 'nickname', type: 'string'},
-                        {name:'favorite_number',type:'int'},
-                        {name:'favorite_restaurant',type:'string'}
-                    ]
-                })}>Validate Input</Button>
+                <input type="text" onChange={updateJsonMessage}/>
+            }
+            {
+                <Button onClick={validateJson}>Validate Input</Button>
             }
             {
                 <Button onClick={submitMessage}>Submit Message</Button>
