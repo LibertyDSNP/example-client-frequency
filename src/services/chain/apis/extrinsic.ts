@@ -161,8 +161,7 @@ export const addMessage = async (message: string, schema_id: number) => {
 export const getMessages = async (schema_id: number) => {
     const api = requireGetProviderApi();
 
-    const messages = await (api.rpc as any).messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
-
+    const messages = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
     console.log("messages: {}", JSON.stringify(messages.content, null, ' '));
 
 }
