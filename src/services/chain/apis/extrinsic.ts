@@ -121,13 +121,13 @@ export const createMsaForProvider = async (callback: DsnpCallback,
 export const fetchAllSchemas = async (): Promise<Array<any>> => {
     const api = requireGetProviderApi();
 
-    const schema_id = (api.rpc as any).schemas.getLatestSchemaId()
+    const schema_id = await api.rpc.schemas.getLatestSchemaId()
     console.log(schema_id.toString());
 
     let returnList: Array<any> = [];
     for (let i = 1; i <= schema_id; i++) {
         try {
-            const schema = await (await (api.rpc as any).schemas.getBySchemaId(i));
+            const schema = await (await api.rpc.schemas.getBySchemaId(i));
             if (!schema.isEmpty) {
                 let s = schema.unwrap();
                 console.log("Schema ID %s, %s, Location: %s", s.schema_id, s.model_type, s.payload_location);
