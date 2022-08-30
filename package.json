@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dsnp/frequency-api-augment": "0.0.0-96a1ef",
+    "@dsnp/frequency-api-augment": "0.0.0-7368d1",
     "@polkadot/api": "9.2.4",
-    "@polkadot/types": "9.2.4",
     "@polkadot/extension-dapp": "^0.44.1",
+    "@polkadot/types": "9.2.4",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
