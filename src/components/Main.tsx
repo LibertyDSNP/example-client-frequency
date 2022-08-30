@@ -136,7 +136,7 @@ const Main = (): JSX.Element => {
         // getMessages(1);
 
         const api = requireGetProviderApi();
-        const schema_id = await api.rpc.schemas.getLastSchemaId();
+        const schema_id = await api.rpc.schemas.getLatestSchemaId();
 
         const messages = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
         console.log("messages: {}", JSON.stringify(messages.content, null, ' '));
