@@ -4,6 +4,7 @@ import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, getMessages} from "../services/chain/apis/extrinsic";
 import * as avro from "avsc";
+import { requireGetProviderApi } from "../services/config";
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -119,7 +120,7 @@ const Main = (): JSX.Element => {
         setInputJsonMessage(event.target.value);
     }
 
-    const submitMessage = () => {
+    const submitMessage =  async () => {
         let input =
         `{
             "nickname": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
@@ -127,12 +128,18 @@ const Main = (): JSX.Element => {
         addMessage(input, 1);
     }
 
-    const listSchemas = () => {
+    const listSchemas = async () => {
         fetchAllSchemas();
     }
 
-    const listMessages = () => {
-        getMessages(1);
+    const listMessages = async () => {
+        // getMessages(1);
+
+        const api = requireGetProviderApi();
+        const schema_id = await api.rpc.schemas.getLastSchemaId();
+
+        const messages = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
+        console.log("messages: {}", JSON.stringify(messages.content, null, ' '));
     }
 
     useEffect(() => {
