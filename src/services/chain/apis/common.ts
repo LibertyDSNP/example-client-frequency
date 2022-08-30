@@ -1,7 +1,7 @@
 import { bnToBn, bnToHex } from "@polkadot/util";
 import { AnyJson } from "@polkadot/types-codec/types";
-import { ExtrinsicStatus } from  "@polkadot/api/node_modules/@polkadot/types/interfaces/author/types"; //"@polkadot/types/interfaces/author/types";
-import { EventRecord } from "@polkadot/api/node_modules/@polkadot/types/interfaces/system/types";//"@polkadot/types/interfaces/system/types";
+import { ExtrinsicStatus } from  "@polkadot/types/interfaces/author/types";
+import { EventRecord } from "@polkadot/types/interfaces/system/types";
 
 // Notice: any changes to this should be reflected on scaleEncode(data: DelegateData) also
 export interface DelegateData {
