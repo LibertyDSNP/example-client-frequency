@@ -28,11 +28,11 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     setConfig(conf);
 
     // querying this rpc endpoint responds with a PolkadotJS version of rust's Option
-    let maybeServiceMsaId: Option<U32> = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
+    let maybeServiceMsaId: Option<U32> = await providerApi.rpc.msa.getMsaId(serviceKeys.publicKey);
     if (maybeServiceMsaId.isEmpty) {
         await createMsaForProvider(
             async (status, events)  => {
-                maybeServiceMsaId = await (providerApi.rpc as any).msa.getMsaId(serviceKeys.publicKey);
+                maybeServiceMsaId = await providerApi.rpc.msa.getMsaId(serviceKeys.publicKey);
             },
             (error) => {
                 alert("Could not create MSA " + error.message);
@@ -52,7 +52,7 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
 export const getMsaId = async (wallet: Wallet): Promise<bigint | undefined> => {
     let providerApi = requireGetProviderApi();
     let walletAddress = wallet.getAddress();
-    let maybeServiceMsaId: Option<U32> = await (providerApi.rpc as any).msa.getMsaId(walletAddress);
+    let maybeServiceMsaId: Option<U32> = await providerApi.rpc.msa.getMsaId(walletAddress);
     if (maybeServiceMsaId.isEmpty) { return undefined }
     let res = maybeServiceMsaId.value.toBigInt();
     console.log("msa ID: ", res);
