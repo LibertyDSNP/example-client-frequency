@@ -21,12 +21,8 @@
     "jsx": "react-jsx"
   },
   "typeRoots": [
-    "./typings",
     "./node_modules/@types/",
-    "./node_modules/@polkadot/types",
-    "./node-modules/@polkadot/types-augment",
-    "./node_modules/@polkadot/types-codec",
-    "./node_modules/@polkadot/types-create",
+    "./node_modules/@polkadot/types"
   ],
   "include": [
     "src"
