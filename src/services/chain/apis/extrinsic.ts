@@ -119,36 +119,33 @@ export const createMsaForProvider = async (callback: DsnpCallback,
 }
 
 export const fetchAllSchemas = async (): Promise<Array<any>> => {
-    const api = requireGetProviderApi();
+  const api = requireGetProviderApi();
 
-    const schema_id = await api.rpc.schemas.getLatestSchemaId()
-    console.log(schema_id.toString());
+  const schema_id = await api.rpc.schemas.getLatestSchemaId();
+  console.log(schema_id.toString());
 
-    let returnList: Array<string> = [];
-    for (let i = 1; i <= schema_id; i++) {
-        try {
-            const schema = await api.rpc.schemas.getBySchemaId(i);
-            if (!schema.isEmpty) {
-                let s = await fetchSchema(i)
-                returnList.push(s);
-            }
-        } catch(e) {
-            console.log ("Error when fetching schemas: {}", e);
-            continue;
-        }
-      }
-    return returnList;
-}
+  let returnList: Array<string> = [];
+  for (let i = 1; i <= schema_id; i++) {
+    try {
+      let s = await fetchSchema(i);
+      returnList.push(s);
+    } catch (e) {
+      console.log("Error when fetching schemas: {}", e);
+      continue;
+    }
+  }
+  return returnList;
+};
 
-export const fetchSchema = async (schema_id: number):  Promise<string> => {
-    const api = requireGetProviderApi();
+export const fetchSchema = async (schema_id: number): Promise<string> => {
+  const api = requireGetProviderApi();
 
-    const schema = await api.rpc.schemas.getBySchemaId(schema_id);
-        let schemaResult = schema.unwrap();
-        const jsonSchema = Buffer.from(schemaResult.model).toString('utf8')
-        const jsonParsed = JSON.parse(jsonSchema)
-        return jsonParsed
-}
+  const schema = await api.rpc.schemas.getBySchemaId(schema_id);
+  let schemaResult = schema.unwrap();
+  const jsonSchema = Buffer.from(schemaResult.model).toString("utf8");
+  const jsonParsed = JSON.parse(jsonSchema);
+  return jsonParsed;
+};
 
 export const registerSchema = async (input: string) => {
     const api = requireGetProviderApi();
@@ -168,9 +165,13 @@ export const addMessage = async (message: string, schema_id: number) => {
 }
 
 export const getMessages = async (schema_id: number) => {
-    const api = requireGetProviderApi();
+  const api = requireGetProviderApi();
 
-    const messages = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
-    console.log("messages: {}", JSON.stringify(messages.content, null, ' '));
-
-}
+  const messages = await api.rpc.messages.getBySchema(schema_id, {
+    from_block: 0,
+    from_index: 0,
+    to_block: 50_000,
+    page_size: 100,
+  });
+  console.log("messages: {}", JSON.stringify(messages.content, null, " "));
+};
