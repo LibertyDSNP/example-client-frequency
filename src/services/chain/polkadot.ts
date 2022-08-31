@@ -15,6 +15,5 @@ export const setupProviderApi = async (config: Config, providerHost: string = ''
         provider: wsProvider,
         ...options,
     });
-    console.log("provider api rpc - msa {}", config.providerApi.rpc);
     return config.providerApi;
 };
