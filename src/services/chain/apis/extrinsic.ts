@@ -124,14 +124,13 @@ export const fetchAllSchemas = async (): Promise<Array<any>> => {
     const schema_id = await api.rpc.schemas.getLatestSchemaId()
     console.log(schema_id.toString());
 
-    let returnList: Array<any> = [];
+    let returnList: Array<string> = [];
     for (let i = 1; i <= schema_id; i++) {
         try {
-            const schema = await (await api.rpc.schemas.getBySchemaId(i));
+            const schema = await api.rpc.schemas.getBySchemaId(i);
             if (!schema.isEmpty) {
-                let s = schema.unwrap();
-                console.log("Schema ID %s, %s, Location: %s", s.schema_id, s.model_type, s.payload_location);
-                returnList.concat(s.schema_id);
+                let s = await fetchSchema(i)
+                returnList.push(s);
             }
         } catch(e) {
             console.log ("Error when fetching schemas: {}", e);
@@ -139,6 +138,16 @@ export const fetchAllSchemas = async (): Promise<Array<any>> => {
         }
       }
     return returnList;
+}
+
+export const fetchSchema = async (schema_id: number):  Promise<string> => {
+    const api = requireGetProviderApi();
+
+    const schema = await api.rpc.schemas.getBySchemaId(schema_id);
+        let schemaResult = schema.unwrap();
+        const jsonSchema = Buffer.from(schemaResult.model).toString('utf8')
+        const jsonParsed = JSON.parse(jsonSchema)
+        return jsonParsed
 }
 
 export const registerSchema = async (input: string) => {

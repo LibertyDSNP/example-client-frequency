@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
-import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, getMessages} from "../services/chain/apis/extrinsic";
+import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, getMessages, fetchSchema} from "../services/chain/apis/extrinsic";
 import * as avro from "avsc";
 import { requireGetProviderApi } from "../services/config";
 
@@ -27,6 +27,7 @@ const Main = (): JSX.Element => {
     )
 
     const [inputJsonMessage, setInputJsonMessage] = React.useState<string>();
+    const [inputSchmema, setInputSchmema] = React.useState<string>();
 
     const walletType = wallet.WalletType.DOTJS
     const doConnectWallet = async () => {
@@ -81,9 +82,9 @@ const Main = (): JSX.Element => {
         })();
     }
 
-    const doRegisterSchema = (input: string) => {
+    const doRegisterSchema = async () => {
         const staticSchema =
-        `{
+        {
             type: 'record',
             name: 'User',
             fields: [
@@ -92,14 +93,11 @@ const Main = (): JSX.Element => {
                 {name:'favorite_restaurant',type:'string'}
             ]
         }
-        `
-        registerSchema(staticSchema);
+
+        registerSchema(JSON.stringify(staticSchema));
     }
 
-    const validateJson = () => {
-
-        // have to map this string to json type and then create the avro schema
-        console.log("input message", inputJsonMessage);
+    const validateJsonExample = async () => {
 
         const x: avro.Schema =  {
             type: 'record',
@@ -110,14 +108,22 @@ const Main = (): JSX.Element => {
                 {name:'favorite_restaurant',type:'string'}
             ]
         };
-        // const read: avro.Schema = avro.readSchema(x);
+
         const record: avro.Type = avro.Type.forSchema(x);
-        const valid = record.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'})
+        const valid = record.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
         console.log("is valid? ", valid);
+    }
+
+    const validateJson = async () => {
+        console.log("you have validated json {}", inputJsonMessage);
     }
 
     const updateJsonMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputJsonMessage(event.target.value);
+    }
+
+    const updateSchemaInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputSchmema(event.target.value);
     }
 
     const submitMessage =  async () => {
@@ -129,7 +135,8 @@ const Main = (): JSX.Element => {
     }
 
     const listSchemas = async () => {
-        fetchAllSchemas();
+        const schemas = await fetchAllSchemas();
+        schemas.forEach(x => console.log(JSON.stringify(x, null, ' ')));
     }
 
     const listMessages = async () => {
@@ -201,7 +208,11 @@ const Main = (): JSX.Element => {
         </Content>
         <Content>
             {
-                <Button onClick={() => doRegisterSchema('placeholder')}>Register Schema</Button>
+                <input type="text" onChange={updateSchemaInput}/>
+            }
+            {
+                <Button onClick={doRegisterSchema}>Register Schema</Button>
+
             }
             {
                 <Button onClick={listSchemas}>List Schemas</Button>
