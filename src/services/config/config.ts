@@ -73,7 +73,6 @@ export const updateConfig = (newOpts: ConfigOpts): Config => {
  */
 export const requireGetProviderApi = (opts?: ConfigOpts): ApiPromise => {
   const provider = opts?.providerApi || getConfig().providerApi;
-  console.log("provider: {}", provider);
   if (!provider) throw new MissingProviderConfigError();
   return provider;
 };
