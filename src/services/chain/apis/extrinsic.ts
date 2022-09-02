@@ -140,7 +140,7 @@ export const fetchSchema = async (schemaId: number): Promise<any> => {
   const api = requireGetProviderApi();
 
   const schema = await api.rpc.schemas.getBySchemaId(schemaId);
-  let schemaResult: SchemaResponse = schema.unwrap();
+  let schemaResult = schema.unwrap();
   const jsonSchema = Buffer.from(schemaResult.model).toString("utf8");
   const modelParsed = JSON.parse(jsonSchema);
   let x = {...schemaResult, modelParsed};
