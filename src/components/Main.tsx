@@ -28,6 +28,7 @@ const Main = (): JSX.Element => {
 
     const [inputJsonMessage, setInputJsonMessage] = React.useState<string>();
     const [inputSchmema, setInputSchmema] = React.useState<string>();
+    const [listOfSchemas, setListOfSchemas] = React.useState<Array<any>>();
 
     const walletType = wallet.WalletType.DOTJS
     const doConnectWallet = async () => {
@@ -115,7 +116,7 @@ const Main = (): JSX.Element => {
     }
 
     const validateJson = async () => {
-        console.log("you have validated json {}", inputJsonMessage);
+        console.log("you have validated json", inputJsonMessage);
     }
 
     const updateJsonMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +137,7 @@ const Main = (): JSX.Element => {
 
     const listSchemas = async () => {
         const schemas = await fetchAllSchemas();
-        schemas.forEach(x => console.log(JSON.stringify(x, null, ' ')));
+        setListOfSchemas(schemas);
     }
 
     const listMessages = async () => {
@@ -214,8 +215,17 @@ const Main = (): JSX.Element => {
                 <Button onClick={doRegisterSchema}>Register Schema</Button>
 
             }
-            {
-                <Button onClick={listSchemas}>List Schemas</Button>
+            {   <>
+                    <Button onClick={listSchemas}>List Schemas</Button>
+                    <ul>
+                        {listOfSchemas?.map((sch) =>
+                        <>
+                            <li key ={sch.id}>Model Type: {sch.type} | Location: {sch.location} </li>
+
+                        </>)}
+                    </ul>
+                </>
+
             }
             {
                 <input type="text" onChange={updateJsonMessage}/>
