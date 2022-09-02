@@ -122,7 +122,6 @@ export const fetchAllSchemas = async (): Promise<Array<any>> => {
   const api = requireGetProviderApi();
 
   const schema_id = await api.rpc.schemas.getLatestSchemaId();
-  console.log(schema_id.toString());
 
   let returnList: Array<string> = [];
   for (let i = 1; i <= schema_id; i++) {
@@ -137,14 +136,21 @@ export const fetchAllSchemas = async (): Promise<Array<any>> => {
   return returnList;
 };
 
-export const fetchSchema = async (schema_id: number): Promise<string> => {
+export const fetchSchema = async (schemaId: number): Promise<any> => {
   const api = requireGetProviderApi();
 
-  const schema = await api.rpc.schemas.getBySchemaId(schema_id);
-  let schemaResult = schema.unwrap();
+  const schema = await api.rpc.schemas.getBySchemaId(schemaId);
+  let schemaResult: SchemaResponse = schema.unwrap();
   const jsonSchema = Buffer.from(schemaResult.model).toString("utf8");
-  const jsonParsed = JSON.parse(jsonSchema);
-  return jsonParsed;
+  const modelParsed = JSON.parse(jsonSchema);
+  let x = {...schemaResult, modelParsed};
+  const { schema_id, model_type, payload_location } = schemaResult;
+  return {
+    id: schema_id.toString(),
+    type: model_type.toString(),
+    location: payload_location.toString(),
+    modelParsed: JSON.stringify(modelParsed, null, ' ') };
+//   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
 
 export const registerSchema = async (input: string) => {
