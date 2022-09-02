@@ -8,6 +8,9 @@ import {
 import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,} from "./common";
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
+import { BlockPaginationResponseMessage, MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
+import * as avro from "avsc";
+
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -143,15 +146,79 @@ export const fetchSchema = async (schemaId: number): Promise<any> => {
   let schemaResult = schema.unwrap();
   const jsonSchema = Buffer.from(schemaResult.model).toString("utf8");
   const modelParsed = JSON.parse(jsonSchema);
-  let x = {...schemaResult, modelParsed};
   const { schema_id, model_type, payload_location } = schemaResult;
   return {
     id: schema_id.toString(),
     type: model_type.toString(),
     location: payload_location.toString(),
-    modelParsed: JSON.stringify(modelParsed, null, ' ') };
+    modelParsed: JSON.stringify(modelParsed, null, 2) };
 //   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
+
+export const fetchAllMessages = async (): Promise<Array<MessageResponse>> => {
+    const api = requireGetProviderApi();
+    // const schema_id = await api.rpc.schemas.getLatestSchemaId();
+    const schema_id = 1;
+
+    const messages: BlockPaginationResponseMessage = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
+
+    const { content } = messages
+    return content;
+}
+
+export const staticSchema = avro.Type.forSchema (
+    {
+        type: 'record',
+        name: 'User',
+        fields: [
+            {name: 'nickname', type: 'string'},
+            {name:'favorite_number',type:'int'},
+            {name:'favorite_restaurant',type:'string'}
+        ]
+    }
+)
+
+export const anotherSchema = avro.Type.forSchema (
+
+        {
+            type: "record",
+            name: "AvrosampleNetCore.AccountDetails",
+            fields: [
+              {
+                name: "AccountId",
+                type: "int"
+              },
+              {
+                name: "AccountName",
+                type: "string"
+              },
+              {
+                name: "Accounts",
+                type: [
+                  "null",
+                  {
+                    type: "array",
+                    items: {
+                      type: "record",
+                      name: "AvrosampleNetCore.SubAccounts",
+                      fields: [
+                        {
+                          name: "AccountId",
+                          type: "int"
+                        },
+                        {
+                          name: "AccountType",
+                          type: [ "null", "string" ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+
+)
 
 export const registerSchema = async (input: string) => {
     const api = requireGetProviderApi();
@@ -162,22 +229,10 @@ export const registerSchema = async (input: string) => {
 
 };
 
-export const addMessage = async (message: string, schema_id: number) => {
+export const addMessage = async (message: Buffer, schema_id: number) => {
     const api = requireGetProviderApi();
     const serviceKeys: KeyringPair = requireGetServiceKeys();
-
+    console.log("message", message);
     const extrinsic = api.tx.messages.addOnchainMessage(null, schema_id, message);
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
-}
-
-export const getMessages = async (schema_id: number) => {
-  const api = requireGetProviderApi();
-
-  const messages = await api.rpc.messages.getBySchema(schema_id, {
-    from_block: 0,
-    from_index: 0,
-    to_block: 50_000,
-    page_size: 100,
-  });
-  console.log("messages: {}", JSON.stringify(messages.content, null, " "));
 };
