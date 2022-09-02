@@ -1,0 +1,27 @@
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+ table th {
+    position: relative;
+    font-size: 18px;
+ }
+
+ table th,
+ table td {
+    text-align: left;
+    padding: 16px 20px;
+ }
+
+table th span,
+table td span {
+    white-space: non-wrap;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+table tr td {
+    border-top: 1px solid #ccc;
+}
