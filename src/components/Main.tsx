@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Button, Layout, List, Typography} from "antd";
+import {Button, Layout, List, message, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
-import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, getMessages, fetchSchema} from "../services/chain/apis/extrinsic";
+import {createAccountViaService, registerSchema, addMessage, fetchAllSchemas, fetchAllMessages, staticSchema, anotherSchema } from "../services/chain/apis/extrinsic";
 import * as avro from "avsc";
-import { requireGetProviderApi } from "../services/config";
+import './main.css';
+import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
+
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -28,7 +30,8 @@ const Main = (): JSX.Element => {
 
     const [inputJsonMessage, setInputJsonMessage] = React.useState<string>();
     const [inputSchmema, setInputSchmema] = React.useState<string>();
-    const [listOfSchemas, setListOfSchemas] = React.useState<Array<any>>();
+    const [listOfSchemas, setListOfSchemas] = React.useState<Array<any>>([]);
+    const [listOfMessages, setListOfMessage] = React.useState<Array<MessageResponse>>([]);
 
     const walletType = wallet.WalletType.DOTJS
     const doConnectWallet = async () => {
@@ -84,34 +87,15 @@ const Main = (): JSX.Element => {
     }
 
     const doRegisterSchema = async () => {
-        const staticSchema =
-        {
-            type: 'record',
-            name: 'User',
-            fields: [
-                {name: 'nickname', type: 'string'},
-                {name:'favorite_number',type:'int'},
-                {name:'favorite_restaurant',type:'string'}
-            ]
-        }
-
-        registerSchema(JSON.stringify(staticSchema));
+        // registerSchema(JSON.stringify(staticSchema.schema()));
+        registerSchema(JSON.stringify(anotherSchema.schema()));
+        console.log("register schema end", staticSchema.schema());
+        console.log("register", JSON.stringify(anotherSchema.schema()));
     }
 
     const validateJsonExample = async () => {
 
-        const x: avro.Schema =  {
-            type: 'record',
-            name: 'User',
-            fields: [
-                {name: 'nickname', type: 'string'},
-                {name:'favorite_number',type:'int'},
-                {name:'favorite_restaurant',type:'string'}
-            ]
-        };
-
-        const record: avro.Type = avro.Type.forSchema(x);
-        const valid = record.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
+        const valid = staticSchema.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
         console.log("is valid? ", valid);
     }
 
@@ -129,10 +113,12 @@ const Main = (): JSX.Element => {
 
     const submitMessage =  async () => {
         let input =
-        `{
+        {
             "nickname": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
-        }`
-        addMessage(input, 1);
+        }
+        let message: Buffer = staticSchema.toBuffer({nickname: "omar", favorite_number: 6, favorite_restaurant: "Ramen Takeya"})
+        addMessage(message, 1);
+        console.log("submit message func finished?");
     }
 
     const listSchemas = async () => {
@@ -141,13 +127,11 @@ const Main = (): JSX.Element => {
     }
 
     const listMessages = async () => {
-        // getMessages(1);
-
-        const api = requireGetProviderApi();
-        const schema_id = await api.rpc.schemas.getLatestSchemaId();
-
-        const messages = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
-        console.log("messages: {}", JSON.stringify(messages.content, null, ' '));
+        const messages: MessageResponse[] = await fetchAllMessages();
+        setListOfMessage(messages);
+        console.log(messages[0].payload.buffer);
+        // staticSchema.fromBuffer(messages[0].payload.buffer)
+        // console.log("messages: {}", JSON.stringify(messages, null, ' '));
     }
 
     useEffect(() => {
@@ -208,37 +192,62 @@ const Main = (): JSX.Element => {
             }
         </Content>
         <Content>
-            {
+            {/* {
                 <input type="text" onChange={updateSchemaInput}/>
-            }
+            } */}
             {
                 <Button onClick={doRegisterSchema}>Register Schema</Button>
-
             }
             {   <>
                     <Button onClick={listSchemas}>List Schemas</Button>
-                    <ul>
+                    <div>
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Location</th>
+                            <th>Model</th>
+                        </tr>
                         {listOfSchemas?.map((sch) =>
-                        <>
-                            <li key ={sch.id}>Model Type: {sch.type} | Location: {sch.location} </li>
-
-                        </>)}
-                    </ul>
+                            <tr>
+                                <td>{sch.id}</td>
+                                <td>{sch.type}</td>
+                                <td>{sch.location}</td>
+                                <td><pre>{sch.modelParsed}</pre></td>
+                            </tr>
+                        )}
+                    </table>
+                    </div>
                 </>
-
             }
-            {
+            {/* {
                 <input type="text" onChange={updateJsonMessage}/>
-            }
-            {
+            } */}
+            {/* {
                 <Button onClick={validateJson}>Validate Input</Button>
-            }
+            } */}
             {
                 <Button onClick={submitMessage}>Submit Message</Button>
             }
-            {
-                <Button onClick={listMessages}>List Messages</Button>
-            }
+            {/* {
+                <>
+                    <Button onClick={listMessages}>List Messages</Button>
+                    <div>
+                    <table>
+                        <tr>
+                            <th>Msa Id</th>
+                            <th>Content</th>
+                        </tr>
+                        {listOfMessages?.map((mes) =>
+                            <tr>
+                                <td>{mes.msa_id.toString()}</td>
+                                <td>{mes.payload}</td>
+                            </tr>
+                        )}
+                    </table>
+                    </div>
+                </>
+            } */}
         </Content>
         <Footer className="Footer">
             {!walletAccounts.length &&
