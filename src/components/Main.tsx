@@ -130,8 +130,6 @@ const Main = (): JSX.Element => {
         const messages: MessageResponse[] = await fetchAllMessages();
         setListOfMessage(messages);
         console.log(messages[0].payload.buffer);
-        // staticSchema.fromBuffer(messages[0].payload.buffer)
-        // console.log("messages: {}", JSON.stringify(messages, null, ' '));
     }
 
     useEffect(() => {
@@ -192,9 +190,6 @@ const Main = (): JSX.Element => {
             }
         </Content>
         <Content>
-            {/* {
-                <input type="text" onChange={updateSchemaInput}/>
-            } */}
             {
                 <Button onClick={doRegisterSchema}>Register Schema</Button>
             }
@@ -220,34 +215,9 @@ const Main = (): JSX.Element => {
                     </div>
                 </>
             }
-            {/* {
-                <input type="text" onChange={updateJsonMessage}/>
-            } */}
-            {/* {
-                <Button onClick={validateJson}>Validate Input</Button>
-            } */}
             {
                 <Button onClick={submitMessage}>Submit Message</Button>
             }
-            {/* {
-                <>
-                    <Button onClick={listMessages}>List Messages</Button>
-                    <div>
-                    <table>
-                        <tr>
-                            <th>Msa Id</th>
-                            <th>Content</th>
-                        </tr>
-                        {listOfMessages?.map((mes) =>
-                            <tr>
-                                <td>{mes.msa_id.toString()}</td>
-                                <td>{mes.payload}</td>
-                            </tr>
-                        )}
-                    </table>
-                    </div>
-                </>
-            } */}
         </Content>
         <Footer className="Footer">
             {!walletAccounts.length &&
