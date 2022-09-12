@@ -1,6 +1,7 @@
 import {registerSchema } from "../services/chain/apis/extrinsic";
 import {Button} from "antd";
 import * as avro from "avsc";
+import React from "react";
 
 export const staticSchema = avro.Type.forSchema (
     {
