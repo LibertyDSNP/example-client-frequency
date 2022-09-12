@@ -114,7 +114,8 @@ const Main = (): JSX.Element => {
     }
 
     const listMessages = async () => {
-        const messages: MessageResponse[] = await fetchAllMessages();
+        const s = 1;
+        const messages: MessageResponse[] = await fetchAllMessages(s);
         setListOfMessage(messages);
         console.log(messages[0].payload.buffer);
     }

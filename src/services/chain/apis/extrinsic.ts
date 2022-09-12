@@ -155,10 +155,9 @@ export const fetchSchema = async (schemaId: number): Promise<any> => {
 //   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
 
-export const fetchAllMessages = async (): Promise<Array<MessageResponse>> => {
+export const fetchAllMessages = async (schema_id: number): Promise<Array<MessageResponse>> => {
     const api = requireGetProviderApi();
     // const schema_id = await api.rpc.schemas.getLatestSchemaId();
-    const schema_id = 1;
 
     const messages: BlockPaginationResponseMessage = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
 
