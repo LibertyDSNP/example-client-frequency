@@ -2,11 +2,11 @@ import React, {useEffect, useState} from "react";
 import {Button, Layout, List, message, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
-import {createAccountViaService, addMessage, fetchAllSchemas, fetchAllMessages, staticSchema } from "../services/chain/apis/extrinsic";
+import {createAccountViaService, addMessage, fetchAllSchemas, fetchAllMessages } from "../services/chain/apis/extrinsic";
 import * as avro from "avsc";
 import './main.css';
 import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import RegisterSchema from "./registerSchema";
+import RegisterSchema, { staticSchema } from "./registerSchema";
 
 
 const {Header, Content, Footer} = Layout;
