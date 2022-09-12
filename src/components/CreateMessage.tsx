@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import React from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
 import { staticSchema } from "./RegisterSchema";
 

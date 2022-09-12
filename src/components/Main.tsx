@@ -7,6 +7,7 @@ import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
 import RegisterSchema, { staticSchema } from "./RegisterSchema";
 import ListSchemas from "./ListSchemas";
 import CreateMessage from "./CreateMessage";
+import ListMessages from "./ListMessages";
 
 
 const {Header, Content, Footer} = Layout;
@@ -177,6 +178,9 @@ const Main = (): JSX.Element => {
             }
             {
                 <CreateMessage />
+            }
+            {
+                <ListMessages />
             }
         </Content>
         <Footer className="Footer">
