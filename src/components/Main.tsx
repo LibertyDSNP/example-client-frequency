@@ -6,6 +6,7 @@ import {createAccountViaService, addMessage, fetchAllMessages } from "../service
 import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
 import RegisterSchema, { staticSchema } from "./RegisterSchema";
 import ListSchemas from "./ListSchemas";
+import CreateMessage from "./CreateMessage";
 
 
 const {Header, Content, Footer} = Layout;
@@ -103,16 +104,6 @@ const Main = (): JSX.Element => {
         setInputSchmema(event.target.value);
     }
 
-    const submitMessage =  async () => {
-        let input =
-        {
-            "nickname": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
-        }
-        let message: Buffer = staticSchema.toBuffer({nickname: "omar", favorite_number: 6, favorite_restaurant: "Ramen Takeya"})
-        addMessage(message, 1);
-        console.log("submit message func finished?");
-    }
-
     const listMessages = async () => {
         const s = 1;
         const messages: MessageResponse[] = await fetchAllMessages(s);
@@ -185,7 +176,7 @@ const Main = (): JSX.Element => {
                 <ListSchemas />
             }
             {
-                <Button onClick={submitMessage}>Submit Message</Button>
+                <CreateMessage />
             }
         </Content>
         <Footer className="Footer">
