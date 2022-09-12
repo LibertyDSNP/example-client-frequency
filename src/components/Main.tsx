@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Button, Layout, List, message, Typography} from "antd";
+import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
-import {createAccountViaService, addMessage, fetchAllSchemas, fetchAllMessages } from "../services/chain/apis/extrinsic";
-import * as avro from "avsc";
-import './main.css';
+import {createAccountViaService, addMessage, fetchAllMessages } from "../services/chain/apis/extrinsic";
 import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import RegisterSchema, { staticSchema } from "./registerSchema";
+import RegisterSchema, { staticSchema } from "./RegisterSchema";
+import ListSchemas from "./ListSchemas";
 
 
 const {Header, Content, Footer} = Layout;
@@ -31,7 +30,6 @@ const Main = (): JSX.Element => {
 
     const [inputJsonMessage, setInputJsonMessage] = React.useState<string>();
     const [inputSchmema, setInputSchmema] = React.useState<string>();
-    const [listOfSchemas, setListOfSchemas] = React.useState<Array<any>>([]);
     const [listOfMessages, setListOfMessage] = React.useState<Array<MessageResponse>>([]);
 
     const walletType = wallet.WalletType.DOTJS
@@ -115,11 +113,6 @@ const Main = (): JSX.Element => {
         console.log("submit message func finished?");
     }
 
-    const listSchemas = async () => {
-        const schemas = await fetchAllSchemas();
-        setListOfSchemas(schemas);
-    }
-
     const listMessages = async () => {
         const messages: MessageResponse[] = await fetchAllMessages();
         setListOfMessage(messages);
@@ -187,27 +180,8 @@ const Main = (): JSX.Element => {
             {
                 <RegisterSchema />
             }
-            {   <>
-                    <Button onClick={listSchemas}>List Schemas</Button>
-                    <div>
-                    <table>
-                        <tr>
-                            <th>ID</th>
-                            <th>Type</th>
-                            <th>Location</th>
-                            <th>Model</th>
-                        </tr>
-                        {listOfSchemas?.map((sch) =>
-                            <tr>
-                                <td>{sch.id}</td>
-                                <td>{sch.type}</td>
-                                <td>{sch.location}</td>
-                                <td><pre>{sch.modelParsed}</pre></td>
-                            </tr>
-                        )}
-                    </table>
-                    </div>
-                </>
+            {
+                <ListSchemas />
             }
             {
                 <Button onClick={submitMessage}>Submit Message</Button>
