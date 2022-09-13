@@ -9,7 +9,7 @@ import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,}
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
 import { BlockPaginationResponseMessage, MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import startCase from 'lodash/startCase';
+import { SchemaDetails } from "../../schema";
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -120,12 +120,12 @@ export const createMsaForProvider = async (callback: DsnpCallback,
         });
 }
 
-export const fetchAllSchemas = async (): Promise<Array<any>> => {
+export const fetchAllSchemas = async (): Promise<Array<SchemaDetails>> => {
   const api = requireGetProviderApi();
 
   const schema_id = await api.rpc.schemas.getLatestSchemaId();
 
-  let returnList: Array<string> = [];
+  let returnList: Array<SchemaDetails> = [];
   for (let i = 1; i <= schema_id; i++) {
     try {
       let s = await fetchSchema(i);
@@ -138,7 +138,7 @@ export const fetchAllSchemas = async (): Promise<Array<any>> => {
   return returnList;
 };
 
-export const fetchSchema = async (schemaId: number): Promise<any> => {
+export const fetchSchema = async (schemaId: number): Promise<SchemaDetails> => {
   const api = requireGetProviderApi();
 
   const schema = await api.rpc.schemas.getBySchemaId(schemaId);
@@ -149,9 +149,10 @@ export const fetchSchema = async (schemaId: number): Promise<any> => {
   return {
     key: schemaId.toString(),
     schema_id: schema_id.toString(),
-    model_type: startCase(model_type.toString()).toString(),
-    payload_location: startCase(payload_location.toString()).toString(),
-    model_structure: JSON.stringify(modelParsed, null, 2) };
+    model_type: model_type.toString(),
+    payload_location: payload_location.toString(),
+    model_structure: modelParsed
+    }
 //   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
 
