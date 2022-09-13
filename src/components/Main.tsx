@@ -87,29 +87,8 @@ const Main = (): JSX.Element => {
         })();
     }
 
-    const validateJsonExample = async () => {
-
-        const valid = staticSchema.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
-        console.log("is valid? ", valid);
-    }
-
-    const validateJson = async () => {
-        console.log("you have validated json", inputJsonMessage);
-    }
-
-    const updateJsonMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputJsonMessage(event.target.value);
-    }
-
     const updateSchemaInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputSchmema(event.target.value);
-    }
-
-    const listMessages = async () => {
-        const s = 1;
-        const messages: MessageResponse[] = await fetchAllMessages(s);
-        setListOfMessage(messages);
-        console.log(messages[0].payload.buffer);
     }
 
     useEffect(() => {
