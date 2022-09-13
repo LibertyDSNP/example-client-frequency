@@ -11,27 +11,32 @@ const CreateMessage = (): JSX.Element => {
         setMessageValues(values => ({...values, [name]: value }))
     }
 
-    const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        alert(messagevalues);
-        validateMessage();
-        console.log(messagevalues);
-        submitMessage();
+    const handleChangeNumber = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.target.name;
+        const value = parseFloat(event.target.value);
+        setMessageValues(values => ({...values, [name]: value }))
     }
 
-    const validateMessage = () => {
+    const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const isValid = validateMessage();
+        console.log(messagevalues);
+        if (isValid) submitMessage();
+    }
+
+    const validateMessage = (): boolean => {
         const valid = staticSchema.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
-        console.log("is valid? ", valid);
+        console.log("is example valid? ", valid);
+        console.dir(messagevalues);
+        const isMsgValid = staticSchema.isValid(messagevalues);
+        console.log("is submited message valid", isMsgValid);
+        return isMsgValid;
     }
 
     const submitMessage =  async () => {
-        let input =
-        {
-            "nickname": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
-        }
-        let message: Buffer = staticSchema.toBuffer({nickname: "omar", favorite_number: 6, favorite_restaurant: "Ramen Takeya"})
+        let message: Buffer = staticSchema.toBuffer(messagevalues);
         addMessage(message, 2);
-        console.log("submit message func finished?");
+        console.log("submit message func finished");
     }
 
     return (
@@ -48,15 +53,15 @@ const CreateMessage = (): JSX.Element => {
             <label>Enter Favorite Number:
             <input
                 type="number"
-                name="favoriteNumber"
+                name="favorite_number"
                 placeholder="0"
                 className="input"
-                onChange={handleChange} />
+                onChange={handleChangeNumber} />
             </label>
             <label>Enter Favorite Restaurant
             <input
                 type="text"
-                name="favoriteRestaurant"
+                name="favorite_restaurant"
                 placeholder="Enter Restaurant name"
                 className="input"
                 onChange={handleChange} />
