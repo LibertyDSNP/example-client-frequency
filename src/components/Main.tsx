@@ -169,6 +169,15 @@ const Main = (): JSX.Element => {
                 <Button onClick={registerMsa}>Register MSA</Button>
             }
         </Content>
+        <Footer className="Footer">
+            {!walletAccounts.length &&
+                <Button onClick={connectWallet}>Connect Wallet</Button>}
+            {walletAccounts.length > 0 && <Text className="walletConnectionState--connected">Wallet connected</Text>}
+            {serviceMsaId !== 0n &&
+                <Text className={chainConnectionClass}>{"Service MSA ID: " + serviceMsaId.toString()}</Text>
+            }
+            <Text className={chainConnectionClass}>{connectionLabel}</Text>
+        </Footer>
         <Content>
             {
                 <RegisterSchema />
@@ -183,15 +192,6 @@ const Main = (): JSX.Element => {
                 <ListMessages />
             }
         </Content>
-        <Footer className="Footer">
-            {!walletAccounts.length &&
-                <Button onClick={connectWallet}>Connect Wallet</Button>}
-            {walletAccounts.length > 0 && <Text className="walletConnectionState--connected">Wallet connected</Text>}
-            {serviceMsaId !== 0n &&
-                <Text className={chainConnectionClass}>{"Service MSA ID: " + serviceMsaId.toString()}</Text>
-            }
-            <Text className={chainConnectionClass}>{connectionLabel}</Text>
-        </Footer>
     </Layout>
 }
 export default Main;
