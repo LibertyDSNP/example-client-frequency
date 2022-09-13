@@ -8,4 +8,3 @@ export interface SchemaDetails {
     payload_location: string
     model_structure: Json
 }
-
