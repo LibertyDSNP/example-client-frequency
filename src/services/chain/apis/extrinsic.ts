@@ -147,7 +147,7 @@ export const fetchSchema = async (schemaId: number): Promise<SchemaDetails> => {
   const modelParsed = JSON.parse(jsonSchema);
   const { schema_id, model_type, payload_location } = schemaResult;
   return {
-    key: schemaId.toString(),
+    key: schema_id.toString(),
     schema_id: schema_id.toString(),
     model_type: model_type.toString(),
     payload_location: payload_location.toString(),
