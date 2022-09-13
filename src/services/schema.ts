@@ -2,7 +2,7 @@ import { Json } from "@polkadot/types"
 import React from "react"
 
 export interface SchemaDetails {
-    key: React.Key
+    key: React.Key,
     schema_id: string,
     model_type: string
     payload_location: string
