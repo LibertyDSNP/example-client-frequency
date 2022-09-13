@@ -9,8 +9,7 @@ import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,}
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
 import { BlockPaginationResponseMessage, MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import * as avro from "avsc";
-
+import startCase from 'lodash/startCase';
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -148,10 +147,11 @@ export const fetchSchema = async (schemaId: number): Promise<any> => {
   const modelParsed = JSON.parse(jsonSchema);
   const { schema_id, model_type, payload_location } = schemaResult;
   return {
-    id: schema_id.toString(),
-    type: model_type.toString(),
-    location: payload_location.toString(),
-    modelParsed: JSON.stringify(modelParsed, null, 2) };
+    key: schemaId.toString(),
+    schema_id: schema_id.toString(),
+    model_type: startCase(model_type.toString()).toString(),
+    payload_location: startCase(payload_location.toString()).toString(),
+    model_structure: JSON.stringify(modelParsed, null, 2) };
 //   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
 
