@@ -20,13 +20,12 @@ const CreateMessage = (): JSX.Element => {
     const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const isValid = validateMessage();
-        console.log(messagevalues);
         if (isValid) submitMessage();
     }
 
     const validateMessage = (): boolean => {
         const valid = staticSchema.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
-        console.log("is example valid? ", valid);
+        // console.log("is example valid? ", valid);
         console.dir(messagevalues);
         const isMsgValid = staticSchema.isValid(messagevalues);
         console.log("is submited message valid", isMsgValid);
