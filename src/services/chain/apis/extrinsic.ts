@@ -177,7 +177,6 @@ export const registerSchema = async (input: string) => {
 export const addMessage = async (message: Buffer, schema_id: number) => {
     const api = requireGetProviderApi();
     const serviceKeys: KeyringPair = requireGetServiceKeys();
-    console.log("message", message);
     const extrinsic = api.tx.messages.addOnchainMessage(null, schema_id, message);
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
 };
