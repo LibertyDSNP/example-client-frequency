@@ -1,0 +1,25 @@
+{
+  "0": {
+    "page_label": "static schema",
+    "fields": [
+      {
+        "field_id": "nickname",
+        "field_label": "Nickname",
+        "field_placeholder": "Enter Nickname",
+        "field_type": "text"
+      },
+      {
+        "field_id": "favorite_number",
+        "field_label": "Favorite Number",
+        "field_placeholder": "Enter your favorite number",
+        "field_type": "number"
+      },
+      {
+        "field_id": "favorite_restaurant",
+        "field_label": "Favorite Restaurant",
+        "field_placeholder": "Enter your favorite restaurant",
+        "field_type": "text"
+      }
+    ]
+  }
+}
