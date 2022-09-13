@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import React, { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
 import { staticSchema } from "./RegisterSchema";
@@ -12,10 +11,20 @@ const CreateMessage = (): JSX.Element => {
         setMessageValues(values => ({...values, [name]: value }))
     }
 
-    const submitMessage =  async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         alert(messagevalues);
+        validateMessage();
         console.log(messagevalues);
+        submitMessage();
+    }
+
+    const validateMessage = () => {
+        const valid = staticSchema.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
+        console.log("is valid? ", valid);
+    }
+
+    const submitMessage =  async () => {
         let input =
         {
             "nickname": "omar", "favorite_number": 6, "favorite_restaurant": "Ramen Takeya"
@@ -27,7 +36,7 @@ const CreateMessage = (): JSX.Element => {
 
     return (
         <div className="container">
-        <form onSubmit={submitMessage}>
+        <form onSubmit={handleSubmit}>
             <label>Enter nickname:
             <input
                 type="text"
@@ -52,11 +61,10 @@ const CreateMessage = (): JSX.Element => {
                 className="input"
                 onChange={handleChange} />
             </label>
-        <button type="submit" className="btn">Submit Message</button>
+        <button type="submit" className="btn">Create Message</button>
         </form>
         </div>
     )
-
 }
 
 export default CreateMessage;
