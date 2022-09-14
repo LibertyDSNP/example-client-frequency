@@ -3,13 +3,9 @@ import {Button, Layout, List, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService } from "../services/chain/apis/extrinsic";
-import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
 import RegisterSchema from "./RegisterSchema";
 import ListSchemas from "./ListSchemas";
-import CreateMessage from "./CreateMessage";
-import ListMessages from "./ListMessages";
 import { SchemaDetails } from "../services/types";
-import { Json } from "@polkadot/types";
 
 
 const {Header, Content, Footer} = Layout;
@@ -31,7 +27,6 @@ const Main = (): JSX.Element => {
     const [chainConnectionClass, setChainConnectionClass] = useState<string>(
         "Footer--chainConnectionState"
     )
-    const [selectedSchema, setSelectedSchema] = useState<SchemaDetails>({key: 0, schema_id: "0", model_type: "", payload_location: "", model_structure: JSON.parse("{}")});
 
     const [inputSchmema, setInputSchmema] = React.useState<string>();
 
@@ -90,11 +85,6 @@ const Main = (): JSX.Element => {
 
     const updateSchemaInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputSchmema(event.target.value);
-    }
-
-    const doSetSelectedSchema = (record: SchemaDetails) => {
-        console.log("record: ",record);
-        setSelectedSchema(record);
     }
 
     useEffect(() => {
@@ -168,14 +158,9 @@ const Main = (): JSX.Element => {
                 <RegisterSchema />
             }
             {
-                <ListSchemas callback={doSetSelectedSchema}/>
+                <ListSchemas />
             }
-            {
-                <CreateMessage schema={selectedSchema}/>
-            }
-            {
-                <ListMessages />
-            }
+
         </Content>
     </Layout>
 }
