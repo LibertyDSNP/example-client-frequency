@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
-import { MessageProps, SchemaDetails } from "../services/types";
+import { SchemaProps, SchemaDetails } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
 
-const CreateMessage = (props: MessageProps): JSX.Element => {
+const CreateMessage = (props: SchemaProps): JSX.Element => {
     const [messagevalues, setMessageValues] = useState({});
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
