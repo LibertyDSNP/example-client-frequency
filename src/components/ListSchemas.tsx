@@ -6,28 +6,21 @@ import startCase from 'lodash/startCase';
 import './styles.css';
 import Column from "antd/lib/table/Column";
 
-const ListSchemas = (): JSX.Element => {
+interface schemaProps {
+    callback: (record: SchemaDetails) => void;
+}
+
+const ListSchemas = (props: schemaProps): JSX.Element => {
     const [listOfSchemas, setListOfSchemas] = React.useState<SchemaDetails[]>([]);
-    const [selectedSchemaKey, setSelectedSchemaKey] = useState<React.Key[]>([]);
 
     const listSchemas = async () => {
         const schemas = await fetchAllSchemas();
         setListOfSchemas(schemas);
     }
 
-    const onSelectChange = (newSelectedKey: React.Key[]) => {
-        setSelectedSchemaKey(newSelectedKey);
-        console.log("selected key changed", selectedSchemaKey);
-    }
-
-    const rowSelection = {
-        selectedSchemaKey,
-        onChange: onSelectChange,
-    };
-
     return <div>
             <Button onClick={listSchemas}>List Schemas</Button>
-            <Table rowSelection={{type: 'radio', ...rowSelection,}} dataSource={listOfSchemas}>
+            <Table dataSource={listOfSchemas}>
                 <Column title= 'Schema Id' dataIndex= 'schema_id' key= 'schema_id' />
                 <Column title= 'Model Type' dataIndex= 'model_type' key= 'model_type'
                         render={(type: string) => (startCase(type).toString())}/>
@@ -41,6 +34,12 @@ const ListSchemas = (): JSX.Element => {
                         <pre>
                             {JSON.stringify({sch}, null, 2)}
                         </pre>
+                    )} />
+                     <Column
+                        title="Messages"
+                        key="createMessage"
+                        render={(record) => (
+                            <button onClick={() => props.callback(record)}>Create Message</button>
                     )} />
             </Table>
         </div>

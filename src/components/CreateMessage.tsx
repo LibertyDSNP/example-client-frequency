@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
+import { SchemaDetails } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
-const CreateMessage = (): JSX.Element => {
+interface messageProps {
+    schema: SchemaDetails
+}
+const CreateMessage = (props: messageProps): JSX.Element => {
     const [messagevalues, setMessageValues] = useState({});
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +38,8 @@ const CreateMessage = (): JSX.Element => {
 
     const submitMessage =  async () => {
         let message: Buffer = staticSchema.toBuffer(messagevalues);
-        addMessage(message, 2);
+        addMessage(message,parseInt(props?.schema?.schema_id));
+        console.log(props.schema?.schema_id);
         console.log("submit message func finished");
     }
 
