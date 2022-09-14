@@ -15,6 +15,6 @@ export interface MessageDetails {
     payload_length: u32
 }
 
-export interface MessageProps {
+export interface SchemaProps {
     schema: SchemaDetails
 }

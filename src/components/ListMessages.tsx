@@ -5,10 +5,10 @@ import { Button, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React from "react";
 import { fetchAllMessages } from "../services/chain/apis/extrinsic";
-import { MessageDetails, MessageProps } from "../services/types";
+import { MessageDetails, SchemaProps } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
-const ListMessages = (props: MessageProps): JSX.Element => {
+const ListMessages = (props: SchemaProps): JSX.Element => {
 
     const [listOfMessages, setListOfMessage] = React.useState<MessageDetails[]>([]);
 
