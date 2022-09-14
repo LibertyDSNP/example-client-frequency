@@ -5,16 +5,15 @@ import { Button, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React from "react";
 import { fetchAllMessages } from "../services/chain/apis/extrinsic";
-import { MessageDetails } from "../services/types";
+import { MessageDetails, MessageProps } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
-const ListMessages = (): JSX.Element => {
+const ListMessages = (props: MessageProps): JSX.Element => {
 
     const [listOfMessages, setListOfMessage] = React.useState<MessageDetails[]>([]);
 
     const listMessages = async () => {
-        const s = 1;
-        const messages = await fetchAllMessages(s);
+        const messages = await fetchAllMessages(parseInt(props.schema.schema_id));
         // setListOfMessage(messages);
         console.log("message payload: ", messages[0].payload);
         const payloadBuffer: Buffer = Buffer.from(messages[0].payload);

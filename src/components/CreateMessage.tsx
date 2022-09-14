@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
-import { SchemaDetails } from "../services/types";
+import { MessageProps, SchemaDetails } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
-interface messageProps {
-    schema: SchemaDetails
-}
-const CreateMessage = (props: messageProps): JSX.Element => {
+
+const CreateMessage = (props: MessageProps): JSX.Element => {
     const [messagevalues, setMessageValues] = useState({});
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +74,7 @@ const CreateMessage = (props: messageProps): JSX.Element => {
                 className="input"
                 onChange={handleChange} />
             </label>
-        <button type="submit" className="btn">Create Message</button>
+        <button type="submit" className="btn">Submit Message</button>
         </form>
         </div>
     )
