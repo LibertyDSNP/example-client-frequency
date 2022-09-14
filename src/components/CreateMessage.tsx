@@ -24,13 +24,19 @@ const CreateMessage = (props: messageProps): JSX.Element => {
     const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const isValid = validateMessage();
-        if (isValid) submitMessage();
+        if (isValid) {
+            submitMessage();
+            setMessageValues({});
+            var formEl = document.getElementById("message-form");
+            (formEl as HTMLFormElement)?.reset();
+        };
     }
 
     const validateMessage = (): boolean => {
         const valid = staticSchema.isValid({ nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'});
         // console.log("is example valid? ", valid);
         console.dir(messagevalues);
+        // also check size of message
         const isMsgValid = staticSchema.isValid(messagevalues);
         console.log("is submited message valid", isMsgValid);
         return isMsgValid;
@@ -38,14 +44,14 @@ const CreateMessage = (props: messageProps): JSX.Element => {
 
     const submitMessage =  async () => {
         let message: Buffer = staticSchema.toBuffer(messagevalues);
-        addMessage(message,parseInt(props?.schema?.schema_id));
-        console.log(props.schema?.schema_id);
+        addMessage(message, parseInt(props?.schema?.schema_id));
+        console.log("selected schema id: ", props.schema?.schema_id);
         console.log("submit message func finished");
     }
 
     return (
         <div className="container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} id="message-form">
             <label>Enter nickname:
             <input
                 type="text"
