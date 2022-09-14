@@ -1,4 +1,4 @@
-import { Json } from "@polkadot/types"
+import { Json, u32 } from "@polkadot/types"
 import React from "react"
 
 export interface SchemaDetails {
@@ -7,4 +7,10 @@ export interface SchemaDetails {
     model_type: string
     payload_location: string
     model_structure: Json
+}
+
+export interface MessageDetails {
+    key: React.Key,
+    payload: Json,
+    payload_length: u32
 }

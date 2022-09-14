@@ -9,7 +9,7 @@ import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,}
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
 import { BlockPaginationResponseMessage, MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import { SchemaDetails } from "../../schema";
+import { MessageDetails, SchemaDetails } from "../../types";
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -156,14 +156,17 @@ export const fetchSchema = async (schemaId: number): Promise<SchemaDetails> => {
 //   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
 
-export const fetchAllMessages = async (schema_id: number): Promise<Array<MessageResponse>> => {
+export const fetchAllMessages = async (schema_id: number): Promise<MessageDetails[]> => {
     const api = requireGetProviderApi();
     // const schema_id = await api.rpc.schemas.getLatestSchemaId();
 
     const messages: BlockPaginationResponseMessage = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
 
     const { content } = messages
-    return content;
+
+    let result: MessageDetails[] = [];
+    return result;
+
 }
 
 export const registerSchema = async (input: string) => {
