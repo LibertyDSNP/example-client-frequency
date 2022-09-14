@@ -1,7 +1,7 @@
 import { Button, Radio, Table } from "antd";
 import React, { useState } from "react";
 import { fetchAllSchemas } from "../services/chain/apis/extrinsic";
-import { SchemaDetails } from "../services/schema";
+import { SchemaDetails } from "../services/types";
 import startCase from 'lodash/startCase';
 import './styles.css';
 import Column from "antd/lib/table/Column";
