@@ -156,16 +156,15 @@ export const fetchSchema = async (schemaId: number): Promise<SchemaDetails> => {
 //   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
 
-export const fetchAllMessages = async (schema_id: number): Promise<MessageDetails[]> => {
+export const fetchAllMessages = async (schema_id: number): Promise<MessageResponse[]> => {
     const api = requireGetProviderApi();
     // const schema_id = await api.rpc.schemas.getLatestSchemaId();
 
     const messages: BlockPaginationResponseMessage = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
 
     const { content } = messages
-
-    let result: MessageDetails[] = [];
-    return result;
+    content.forEach((msg) => {console.log("message received: ", msg.payload, msg.payload_length.toString(), msg.block_number.toString())})
+    return content;
 
 }
 

@@ -1,4 +1,6 @@
 import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
+import { Json } from "@polkadot/types";
+import avsc from 'avsc';
 import { Button, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React from "react";
@@ -13,9 +15,13 @@ const ListMessages = (): JSX.Element => {
     const listMessages = async () => {
         const s = 1;
         const messages = await fetchAllMessages(s);
-        setListOfMessage(messages);
-        // console.log(messages[0].payload.buffer);
-        // staticSchema.fromBuffer(messages[0].payload.buffer)
+        // setListOfMessage(messages);
+        console.log("message payload: ", messages[0].payload);
+        const payloadBuffer: Buffer = Buffer.from(messages[0].payload);
+        console.log("payload buffer", payloadBuffer);
+        const message = staticSchema.fromBuffer(payloadBuffer);
+        if (!message) {console.log("message not deserialized!")}
+        console.log("deserialized message: ", message);
     }
 
     return ( <>
