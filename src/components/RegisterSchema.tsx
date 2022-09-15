@@ -65,8 +65,8 @@ const RegisterSchema = (): JSX.Element => {
     const [schemaRegistered, setSchemaRegistered] = useState("");
 
     const doRegisterSchema = async () => {
-        registerSchema(JSON.stringify(staticSchema.schema()));
-        // registerSchema(JSON.stringify(anotherSchema.schema()));
+        // registerSchema(JSON.stringify(staticSchema.schema()));
+        registerSchema(JSON.stringify(anotherSchema.schema()));
         setSchemaRegistered("Schema Registered successfully");
     }
 

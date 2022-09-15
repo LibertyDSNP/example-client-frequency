@@ -177,9 +177,15 @@ export const registerSchema = async (input: string) => {
 
 };
 
-export const addMessage = async (message: Buffer, schema_id: number) => {
+export const addMessage = async (message: Uint8Array, schema_id: number) => {
     const api = requireGetProviderApi();
     const serviceKeys: KeyringPair = requireGetServiceKeys();
+
+    // const messageBytes = new Uint8Array(message);
+    // const messageHex = "0x" + message.toString("hex");
+    console.log("message bytes right before sending it", message);
+    // console.log("message hex right before sending it", messageHex);
+
     const extrinsic = api.tx.messages.addOnchainMessage(null, schema_id, message);
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
 };

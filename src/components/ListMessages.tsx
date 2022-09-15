@@ -15,8 +15,9 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
     const listMessages = async () => {
         const messages = await fetchAllMessages(parseInt(props.schema.schema_id));
         // setListOfMessage(messages);
-        console.log("message payload: ", messages[0].payload);
-        const payloadBuffer: Buffer = Buffer.from(messages[0].payload);
+        const ind = messages.length - 1;
+        console.log("message payload: ", messages[ind].payload);
+        const payloadBuffer: Buffer = Buffer.from(messages[ind].payload);
         console.log("payload buffer", payloadBuffer);
         const message = staticSchema.fromBuffer(payloadBuffer);
         if (!message) {console.log("message not deserialized!")}
@@ -25,7 +26,7 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
 
     return ( <>
         <Button onClick={listMessages}>List Messages</Button>
-        <Table dataSource={listOfMessages}>
+        <Table dataSource={listOfMessages} size="small" >
             <Column
                 title="Message"
                 dataIndex="payload"
