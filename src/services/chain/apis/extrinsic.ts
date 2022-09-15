@@ -9,7 +9,8 @@ import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,}
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
 import { BlockPaginationResponseMessage, MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import { MessageDetails, SchemaDetails } from "../../types";
+import { SchemaDetails } from "../../types";
+import { message } from "antd";
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -153,19 +154,13 @@ export const fetchSchema = async (schemaId: number): Promise<SchemaDetails> => {
     payload_location: payload_location.toString(),
     model_structure: modelParsed
     }
-//   return { ...schemaResult, modelParsed: JSON.stringify(modelParsed, null, ' ') };
 };
 
-export const fetchAllMessages = async (schema_id: number): Promise<MessageResponse[]> => {
+export const fetchMessagesForSchema = async (schema_id: number): Promise<MessageResponse[]> => {
     const api = requireGetProviderApi();
-    // const schema_id = await api.rpc.schemas.getLatestSchemaId();
-
     const messages: BlockPaginationResponseMessage = await api.rpc.messages.getBySchema(schema_id, {from_block: 0, from_index: 0, to_block: 50_000, page_size: 100});
-
     const { content } = messages
-    content.forEach((msg) => {console.log("message received: ", msg.payload, msg.payload_length.toString(), msg.block_number.toString())})
     return content;
-
 }
 
 export const registerSchema = async (input: string) => {
@@ -177,15 +172,14 @@ export const registerSchema = async (input: string) => {
 
 };
 
-export const addMessage = async (message: Uint8Array, schema_id: number) => {
+export const addMessage =async (message: any, schema_id: number) => {
     const api = requireGetProviderApi();
     const serviceKeys: KeyringPair = requireGetServiceKeys();
 
-    // const messageBytes = new Uint8Array(message);
-    // const messageHex = "0x" + message.toString("hex");
     console.log("message bytes right before sending it", message);
-    // console.log("message hex right before sending it", messageHex);
-
-    const extrinsic = api.tx.messages.addOnchainMessage(null, schema_id, message);
+    const messageHex = "0x" + message.toString("hex");
+    console.log("message hex right before sending it", messageHex);
+    const extrinsic = api.tx.messages.addOnchainMessage(null, schema_id, messageHex);
     await extrinsic?.signAndSend(serviceKeys, {nonce: -1});
-};
+
+}

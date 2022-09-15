@@ -12,9 +12,10 @@ export interface SchemaDetails {
 export interface MessageDetails {
     key: React.Key,
     payload: Json,
-    payload_length: u32
+    payload_length: string
 }
 
 export interface SchemaProps {
     schema: SchemaDetails
+    isVisible: boolean
 }
