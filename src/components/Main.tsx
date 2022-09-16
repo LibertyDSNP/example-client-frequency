@@ -5,8 +5,6 @@ import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService } from "../services/chain/apis/extrinsic";
 import RegisterSchema from "./RegisterSchema";
 import ListSchemas from "./ListSchemas";
-import { SchemaDetails } from "../services/types";
-
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -27,8 +25,6 @@ const Main = (): JSX.Element => {
     const [chainConnectionClass, setChainConnectionClass] = useState<string>(
         "Footer--chainConnectionState"
     )
-
-    const [inputSchmema, setInputSchmema] = React.useState<string>();
 
     const walletType = wallet.WalletType.DOTJS
     const doConnectWallet = async () => {
@@ -81,10 +77,6 @@ const Main = (): JSX.Element => {
                 console.error(e);
             }
         })();
-    }
-
-    const updateSchemaInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputSchmema(event.target.value);
     }
 
     useEffect(() => {
