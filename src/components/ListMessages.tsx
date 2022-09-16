@@ -25,7 +25,7 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
 
     if (props.isVisible)
         {return ( <>
-            <Button onClick={listMessages}>List Messages</Button>
+            <Button onClick={listMessages}>Refresh List</Button>
             <Table dataSource={listOfMessages} size="small" >
                 <Column
                     title="Messages"
