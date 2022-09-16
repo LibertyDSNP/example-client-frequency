@@ -1,5 +1,5 @@
 import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import { Button, Col, Table } from "antd";
+import { Button, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React from "react";
 import { fetchMessagesForSchema } from "../services/chain/apis/extrinsic";
