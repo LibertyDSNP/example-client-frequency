@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Layout, List, Typography} from "antd";
+import {Button, Layout, List, Space, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService } from "../services/chain/apis/extrinsic";
@@ -147,10 +147,10 @@ const Main = (): JSX.Element => {
         </Footer>
         <Content>
             {
+                <Space direction="vertical">
                 <RegisterSchema />
-            }
-            {
                 <ListSchemas />
+                </Space>
             }
 
         </Content>

@@ -20,7 +20,9 @@ const ListSchemas = (): JSX.Element => {
     }
 
     return <div>
+    <Space direction="vertical">
         <Button onClick={listSchemas}>List Schemas</Button>
+
         <Table dataSource={listOfSchemas} size="small" expandedRowRender={record => <pre>{JSON.stringify(record.model_structure, null, 2)}</pre>}>
             <Column title= 'Schema Id' dataIndex= 'schema_id' key= 'schema_id' />
             <Column title= 'Model Type'dataIndex='model_type' key= 'model_type'
@@ -39,7 +41,7 @@ const ListSchemas = (): JSX.Element => {
         </Table>
         <CreateMessage schema={selectedSchema} isVisible={showCreateMessageComp}/>
         <ListMessages schema={selectedSchema} isVisible={showLlistMessageComp}/>
-
+    </Space>
     </div>
 }
 
