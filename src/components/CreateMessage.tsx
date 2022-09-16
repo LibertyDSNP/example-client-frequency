@@ -38,7 +38,7 @@ const CreateMessage = (props: SchemaProps): JSX.Element => {
             <Form
                 name="createMessage"
                 form={form}
-                labelCol={{ span: 3 }}
+                labelCol={{ span: 10 }}
                 wrapperCol={{ span: 6 }}
                 initialValues={{ remember: true }}
                 onFinish={handleSubmit}

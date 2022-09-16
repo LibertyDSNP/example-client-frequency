@@ -1,5 +1,5 @@
 import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
-import { Button, Table } from "antd";
+import { Button, Space, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React from "react";
 import { fetchMessagesForSchema } from "../services/chain/apis/extrinsic";
@@ -25,7 +25,8 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
 
     if (props.isVisible)
         {return ( <>
-            <Button onClick={listMessages}>Refresh List</Button>
+        <Space direction="vertical">
+            <Button onClick={listMessages}>Refresh Messages</Button>
             <Table dataSource={listOfMessages} size="small" >
                 <Column
                     title="Messages"
@@ -41,6 +42,7 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
                     dataIndex="payload_length"
                     key="payload_length" />
             </Table>
+            </Space>
             </>
         )}
     else return <></>
