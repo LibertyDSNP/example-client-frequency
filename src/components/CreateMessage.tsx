@@ -1,5 +1,4 @@
 import { Button, Form, Input, InputNumber } from "antd";
-import React, { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
 import { SchemaProps } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
