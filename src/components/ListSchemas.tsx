@@ -2,7 +2,7 @@ import { Button, Space, Table } from "antd";
 import React, { useState } from "react";
 import { fetchAllSchemas } from "../services/chain/apis/extrinsic";
 import { SchemaDetails } from "../services/types";
-import startCase, { camelCase, lowerCase, upperFirst } from 'lodash';
+import { lowerCase, upperFirst } from 'lodash';
 import './styles.css';
 import Column from "antd/lib/table/Column";
 import CreateMessage from "./CreateMessage";
