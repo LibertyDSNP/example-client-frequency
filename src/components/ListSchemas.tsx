@@ -1,8 +1,8 @@
-import { Button, Table } from "antd";
+import { Button, Space, Table } from "antd";
 import React, { useState } from "react";
 import { fetchAllSchemas } from "../services/chain/apis/extrinsic";
 import { SchemaDetails } from "../services/types";
-import startCase from 'lodash';
+import startCase, { camelCase, lowerCase, upperFirst } from 'lodash';
 import './styles.css';
 import Column from "antd/lib/table/Column";
 import CreateMessage from "./CreateMessage";
@@ -23,16 +23,18 @@ const ListSchemas = (): JSX.Element => {
         <Button onClick={listSchemas}>List Schemas</Button>
         <Table dataSource={listOfSchemas} size="small" expandedRowRender={record => <pre>{JSON.stringify(record.model_structure, null, 2)}</pre>}>
             <Column title= 'Schema Id' dataIndex= 'schema_id' key= 'schema_id' />
-            <Column title= 'Model Type' dataIndex= 'model_type' key= 'model_type'
-                    render={(type: string) => (startCase(type).toString())}/>
-            <Column title= 'Payload Location' dataIndex= 'payload_location' key= 'payload_location'
-                    render={(loc: string) => (startCase(loc).toString())} />
+            <Column title= 'Model Type'dataIndex='model_type' key= 'model_type'
+                    render={(type) => upperFirst(lowerCase(type)) }/>
+            <Column title= 'Payload Location' dataIndex='payload_location' key= 'payload_location'
+                    render={(loc) => upperFirst(lowerCase(loc))} />
             <Column
                 title="Messages"
                 key="messages"
                 render={(record) => ( <>
-                    <button onClick={() => {setSelectedSchema(record); setShowCreateMessageComp(!showCreateMessageComp)}}>Create Message</button>
-                    <button onClick={() => {setSelectedSchema(record); setShowListMessageComp(!showLlistMessageComp)}}>List Messages</button> </>
+                      <Space size="middle">
+                        <a onClick={() => {setSelectedSchema(record); setShowCreateMessageComp(!showCreateMessageComp)}}>Create Message</a>
+                        <a onClick={() => {setSelectedSchema(record); setShowListMessageComp(!showLlistMessageComp)}}>List Messages</a>
+                    </Space> </>
             )} />
         </Table>
         <CreateMessage schema={selectedSchema} isVisible={showCreateMessageComp}/>
