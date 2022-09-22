@@ -1,6 +1,6 @@
 // Import
 import {ApiPromise, WsProvider} from "@polkadot/api";
-import {options} from "@dsnp/frequency-api-augment";
+import {options} from "@frequency-chain/api-augment";
 import {Config} from "../config";
 
 const DefaultWsProvider = new WsProvider(process.env.REACT_APP_CHAIN_HOST);

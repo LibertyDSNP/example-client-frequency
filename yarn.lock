@@ -1215,9 +1215,9 @@
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz#75b4c27948c81e88ccd3a8902047bcd797f38d32"
   integrity sha512-ej5oVy6lykXsvieQtqZxCOaLT+xD4+QNarq78cIYISHmZXshCvROLudpQN3lfL8G0NL7plMSSK+zlyvCaIJ4Iw==
 
-"@dsnp/frequency-api-augment@0.0.0-2d95b1":
+"@frequency-chain/api-augment@0.0.0-2d95b1":
   version "0.0.0-2d95b1"
-  resolved "https://registry.yarnpkg.com/@dsnp/frequency-api-augment/-/frequency-api-augment-0.0.0-2d95b1.tgz#003bff0bb953c252d5dfc3e4197eac32480c0ce2"
+  resolved "https://registry.yarnpkg.com/@frequency-chain/api-augment/-/frequency-api-augment-0.0.0-2d95b1.tgz#003bff0bb953c252d5dfc3e4197eac32480c0ce2"
   integrity sha512-ex+hsxKXeFpqTZLCZkzdaqm+OahfIdv++JgX1vCp5yOm4Tl3M8LCMOUhE6xhctxKeY+hI2ap9xGI7KIa5zvQjg==
   dependencies:
     "@polkadot/api" "^8.11.3"
