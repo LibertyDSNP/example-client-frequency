@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@dsnp/frequency-api-augment": "0.0.0-389a8b",
+    "@dsnp/frequency-api-augment": "0.0.0-91278c",
     "@polkadot/api": "9.2.4",
     "@polkadot/extension-dapp": "^0.44.1",
     "@polkadot/types": "9.2.4",
