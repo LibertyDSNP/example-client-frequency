@@ -15,7 +15,7 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
 
         let allMessages: MessageDetails[] = messages.map((msg) => {
             return {
-                key: msg.block_number.toString(),
+                key: Number(msg.index) + 1,
                 payload: staticSchema.fromBuffer(Buffer.from(msg.payload.buffer)),
                 payload_length: msg.payload_length.toString()};
             });
