@@ -1,22 +1,25 @@
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, Typography } from "antd";
+import { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
 import { SchemaProps } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
-
+const {Text} = Typography;
 
 const CreateMessage = (props: SchemaProps): JSX.Element => {
     const [form] = Form.useForm();
+    const [isMessageValid, setIsMessageValid] = useState("");
 
     const example_msg = { nickname:'omar',favorite_number: 6,favorite_restaurant:'Ramen Takeya'};
 
     const handleSubmit =  async () => {
 
-        let isValid = validateMessage();
-        if (isValid) {
+        if (validateMessage()) {
             submitMessage();
-        };
-        form.resetFields();
+            form.resetFields();
+        } else {
+            setIsMessageValid("Message is invalid")
+        }
     }
 
     const validateMessage = (): boolean => {
@@ -34,7 +37,7 @@ const CreateMessage = (props: SchemaProps): JSX.Element => {
 
     if (props.isVisible)
     {    return (
-
+<>
             <Form
                 name="createMessage"
                 form={form}
@@ -71,6 +74,8 @@ const CreateMessage = (props: SchemaProps): JSX.Element => {
                     </Button>
                 </Form.Item>
             </Form>
+            <Text type="danger">{isMessageValid} </Text>
+            </>
         )}
     else return <></>
 }
