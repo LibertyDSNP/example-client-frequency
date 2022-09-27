@@ -35,8 +35,8 @@ const CreateMessage = (props: SchemaProps): JSX.Element => {
         await addMessage(avroBuffer, parseInt(props?.schema?.schema_id));
     }
 
-    if (props.isVisible)
-    {    return (
+
+        return (
 <>
             <Form
                 name="createMessage"
@@ -76,8 +76,7 @@ const CreateMessage = (props: SchemaProps): JSX.Element => {
             </Form>
             <Text type="danger">{isMessageValid} </Text>
             </>
-        )}
-    else return <></>
+        )
 }
 
 export default CreateMessage;

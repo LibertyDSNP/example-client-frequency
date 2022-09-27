@@ -17,5 +17,4 @@ export interface MessageDetails {
 
 export interface SchemaProps {
   schema: SchemaDetails;
-  isVisible: boolean;
 }

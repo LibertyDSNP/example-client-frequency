@@ -23,8 +23,8 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
             setListOfMessage(allMessages);
     }
 
-    if (props.isVisible)
-        {return ( <>
+
+        return ( <>
         <Space direction="vertical">
             <Button onClick={listMessages}>Refresh Messages</Button>
             <Table dataSource={listOfMessages} size="small" >
@@ -44,8 +44,7 @@ const ListMessages = (props: SchemaProps): JSX.Element => {
             </Table>
             </Space>
             </>
-        )}
-    else return <></>
+        )
 }
 
 export default ListMessages;

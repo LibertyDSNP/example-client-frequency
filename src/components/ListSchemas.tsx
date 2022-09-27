@@ -39,8 +39,8 @@ const ListSchemas = (): JSX.Element => {
                     </Space> </>
             )} />
         </Table>
-        <CreateMessage schema={selectedSchema} isVisible={showCreateMessageComp}/>
-        <ListMessages schema={selectedSchema} isVisible={showLlistMessageComp}/>
+        {showCreateMessageComp && <CreateMessage schema={selectedSchema}/>}
+        {showLlistMessageComp && <ListMessages schema={selectedSchema}/>}
     </Space>
     </div>
 }
