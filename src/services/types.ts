@@ -1,4 +1,4 @@
-import { Json, u32 } from "@polkadot/types";
+import { Json } from "@polkadot/types";
 import React from "react";
 
 export interface SchemaDetails {
