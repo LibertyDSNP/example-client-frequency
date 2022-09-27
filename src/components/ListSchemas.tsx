@@ -2,7 +2,7 @@ import { Button, Space, Table } from "antd";
 import React, { useState } from "react";
 import { fetchAllSchemas } from "../services/chain/apis/extrinsic";
 import { SchemaDetails } from "../services/types";
-import { lowerCase, upperFirst } from 'lodash';
+import { camelCaseToTitleCase } from "../common//util";
 import './styles.css';
 import Column from "antd/lib/table/Column";
 import CreateMessage from "./CreateMessage";
@@ -26,9 +26,9 @@ const ListSchemas = (): JSX.Element => {
         <Table dataSource={listOfSchemas} size="small" expandedRowRender={record => <pre>{JSON.stringify(record.model_structure, null, 2)}</pre>}>
             <Column title= 'Schema Id' dataIndex= 'schema_id' key= 'schema_id' />
             <Column title= 'Model Type'dataIndex='model_type' key= 'model_type'
-                    render={(type) => upperFirst(lowerCase(type)) }/>
+                    render={(type) => camelCaseToTitleCase(type) }/>
             <Column title= 'Payload Location' dataIndex='payload_location' key= 'payload_location'
-                    render={(loc) => upperFirst(lowerCase(loc))} />
+                    render={(loc) => camelCaseToTitleCase(loc)} />
             <Column
                 title="Messages"
                 key="messages"
