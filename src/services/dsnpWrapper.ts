@@ -1,9 +1,9 @@
 import { setupProviderApi } from "./chain";
-import {Config, setConfig, getConfig, updateConfig, requireGetProviderApi} from "./config";
-import {Wallet, wallet, WalletType} from "./wallets/wallet";
+import { Config, setConfig, getConfig, updateConfig, requireGetProviderApi } from "./config";
+import { Wallet, wallet, WalletType } from "./wallets/wallet";
 import { buildServiceAccount } from "./chain/buildServiceAccount";
 import { createMsaForProvider } from "./chain/apis/extrinsic";
-import {Option, U32} from "@polkadot/types-codec"
+import { Option, U64 } from "@polkadot/types-codec"
 
 /**
  * setupChainAndServiceProviders initializes the DSNP sdk with a chain provider and
@@ -27,12 +27,12 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     };
     setConfig(conf);
 
-    // querying this rpc endpoint responds with a PolkadotJS version of rust's Option
-    let maybeServiceMsaId: Option<U32> = await providerApi.rpc.msa.getMsaId(serviceKeys.publicKey);
+    // querying this rpc endpoint responds with a PolkadotJS version of rust's Option    
+    let maybeServiceMsaId: Option<U64> = await providerApi.query.msa.messageSourceIdOf(serviceKeys.publicKey) as Option<U64>;
     if (maybeServiceMsaId.isEmpty) {
         await createMsaForProvider(
             async (status, events)  => {
-                maybeServiceMsaId = await providerApi.rpc.msa.getMsaId(serviceKeys.publicKey);
+                maybeServiceMsaId = await providerApi.query.msa.messageSourceIdOf(serviceKeys.publicKey) as Option<U64>;
             },
             (error) => {
                 alert("Could not create MSA " + error.message);
@@ -52,7 +52,7 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
 export const getMsaId = async (wallet: Wallet): Promise<bigint | undefined> => {
     let providerApi = requireGetProviderApi();
     let walletAddress = wallet.getAddress();
-    let maybeServiceMsaId: Option<U32> = await providerApi.rpc.msa.getMsaId(walletAddress);
+    let maybeServiceMsaId: Option<U64> = await providerApi.query.msa.messageSourceIdOf(walletAddress) as Option<U64>;
     if (maybeServiceMsaId.isEmpty) { return undefined }
     let res = maybeServiceMsaId.value.toBigInt();
     console.log("msa ID: ", res);
