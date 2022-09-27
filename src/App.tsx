@@ -1,4 +1,4 @@
-import "@dsnp/frequency-api-augment";
+import "@frequency-chain/api-augment";
 import './App.css';
 import Main from "./components/Main";
 

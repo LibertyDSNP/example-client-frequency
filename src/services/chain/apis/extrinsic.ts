@@ -8,7 +8,7 @@ import {
 import {DelegateData, DsnpCallback, DsnpErrorCallback, scaleEncodeDelegateData,} from "./common";
 import {SignerPayloadRaw} from "@polkadot/types/types";
 import {KeyringPair} from "@polkadot/keyring/types";
-import { BlockPaginationResponseMessage, MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
+import { BlockPaginationResponseMessage, MessageResponse } from "@frequency-chain/api-augment/interfaces";
 import { SchemaDetails } from "../../types";
 import { message } from "antd";
 

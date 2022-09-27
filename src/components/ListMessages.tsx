@@ -1,4 +1,4 @@
-import { MessageResponse } from "@dsnp/frequency-api-augment/interfaces";
+import { MessageResponse } from "@frequency-chain/api-augment/interfaces";
 import { Button, Space, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React from "react";
