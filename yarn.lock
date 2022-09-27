@@ -1248,6 +1248,8 @@
     "strip-json-comments" "^3.1.1"
 
 "@frequency-chain/api-augment@0.0.0-cab173":
+  "integrity" "sha512-RXrgvIcLSlctybSM41MKu7RuFiq3TOnMWrnxZ7fl21GX+/LsMsp51bUnmZ7qmj38nfvkkAz76TNgd+xrDhT4uQ=="
+  "resolved" "https://registry.npmjs.org/@frequency-chain/api-augment/-/api-augment-0.0.0-cab173.tgz"
   "version" "0.0.0-cab173"
 
 "@humanwhocodes/config-array@^0.10.5":
