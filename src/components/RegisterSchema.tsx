@@ -1,5 +1,5 @@
 import {registerSchema } from "../services/chain/apis/extrinsic";
-import {Button, Space} from "antd";
+import {Button, Space, Typography} from "antd";
 import { useState } from "react";
 import * as avro from "avsc";
 
