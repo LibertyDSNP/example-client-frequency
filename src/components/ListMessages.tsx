@@ -20,13 +20,11 @@ const ListMessages = (props: ListMessageProps): JSX.Element => {
         let allMessages: MessageDetails[] = messages.map((msg, index) => {
             return {
                 key: index,
-                payload: staticSchema.fromBuffer(Buffer.from(msg.payload.buffer)),
-                payload_length: msg.payload_length.toString()};
+                payload: staticSchema.fromBuffer(Buffer.from(msg.payload.buffer))};
             });
 
             setListOfMessage(allMessages);
     }
-
 
         return ( <>
         <Space direction="vertical">
@@ -40,9 +38,6 @@ const ListMessages = (props: ListMessageProps): JSX.Element => {
                             {JSON.stringify({msg}, null, 2)}
                         </pre>
                     )} />
-                <Column
-                    title="Message Length"
-                    dataIndex="payload_length" />
             </Table>
             </Space>
             </>

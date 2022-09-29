@@ -12,5 +12,4 @@ export interface SchemaDetails {
 export interface MessageDetails {
   key: React.Key;
   payload: Json;
-  payload_length: string;
 }
