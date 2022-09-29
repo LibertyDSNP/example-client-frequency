@@ -35,7 +35,6 @@ const ListMessages = (props: ListMessageProps): JSX.Element => {
                 <Column
                     title="Messages"
                     dataIndex="payload"
-                    key="payload"
                     render={(msg: JSON) => (
                         <pre>
                             {JSON.stringify({msg}, null, 2)}
@@ -43,8 +42,7 @@ const ListMessages = (props: ListMessageProps): JSX.Element => {
                     )} />
                 <Column
                     title="Message Length"
-                    dataIndex="payload_length"
-                    key="payload_length" />
+                    dataIndex="payload_length" />
             </Table>
             </Space>
             </>

@@ -24,14 +24,13 @@ const ListSchemas = (): JSX.Element => {
         <Button onClick={listSchemas}>List Schemas</Button>
 
         <Table dataSource={listOfSchemas} size="small" expandedRowRender={record => <pre>{JSON.stringify(record.model_structure, null, 2)}</pre>}>
-            <Column title= 'Schema Id' dataIndex= 'schema_id' key= 'schema_id' />
-            <Column title= 'Model Type'dataIndex='model_type' key= 'model_type'
+            <Column title= 'Schema Id' dataIndex= 'schema_id' />
+            <Column title= 'Model Type'dataIndex='model_type'
                     render={(type) => camelCaseToTitleCase(type) }/>
-            <Column title= 'Payload Location' dataIndex='payload_location' key= 'payload_location'
+            <Column title= 'Payload Location' dataIndex='payload_location'
                     render={(loc) => camelCaseToTitleCase(loc)} />
             <Column
                 title="Messages"
-                key="messages"
                 render={(record) => ( <>
                       <Space size="middle">
                         <a onClick={() => {setSelectedSchema(record); setShowCreateMessageComp(!showCreateMessageComp)}}>Create Message</a>
