@@ -4,32 +4,45 @@
   "private": true,
   "dependencies": {
     "@frequency-chain/api-augment": "0.0.0-cab173",
-    "@polkadot/api": "^8.11.3",
+    "@polkadot/api": "9.2.4",
     "@polkadot/extension-dapp": "^0.44.1",
+    "@polkadot/types": "9.2.4",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/bn.js": "^5.1.0",
+    "@types/core-js": "^2.5.5",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.39",
-    "@types/react": "^18.0.12",
-    "@types/react-dom": "^18.0.5",
+    "@types/react": "^18.0.19",
+    "@types/react-dom": "^18.0.6",
     "antd": "^4.21.0",
+    "assert": "^2.0.0",
+    "avsc": "^5.7.5",
     "bignumber": "^1.1.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "core-js": "^3.24.1",
     "create-react-app": "^5.0.1",
     "dotenv": "^16.0.1",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
+    "path": "^0.12.7",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "react-app-polyfill": "^3.0.0",
+    "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "ts-node": "^10.8.1",
+    "stream": "^0.0.2",
     "typescript": "^4.7.3",
+    "util": "^0.12.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "tsc": "tsc",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
   },
   "eslintConfig": {
     "extends": [
@@ -48,5 +61,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-app-rewired": "^2.2.1"
   }
 }

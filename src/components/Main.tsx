@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Button, Layout, List, Typography} from "antd";
+import {Button, Layout, List, Space, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
-import {createAccountViaService} from "../services/chain/apis/extrinsic";
+import {createAccountViaService } from "../services/chain/apis/extrinsic";
+import RegisterSchema from "./RegisterSchema";
+import ListSchemas from "./ListSchemas";
 
 const {Header, Content, Footer} = Layout;
 const {Text, Title} = Typography;
@@ -60,7 +62,6 @@ const Main = (): JSX.Element => {
         setWalletAddress("");
     }
 
-
     const registerMsa = () => {
         (async () => {
             try {
@@ -85,6 +86,7 @@ const Main = (): JSX.Element => {
                 setServiceMsaId(serviceMsaId);
                 setConnectionLabel("Chain connected");
                 setChainConnectionClass("Footer--chainConnectionState connected");
+
             } catch (e: any) {
                 console.error(e);
             }
@@ -143,6 +145,15 @@ const Main = (): JSX.Element => {
             }
             <Text className={chainConnectionClass}>{connectionLabel}</Text>
         </Footer>
+        <Content>
+            {
+                <Space direction="vertical">
+                <RegisterSchema />
+                <ListSchemas />
+                </Space>
+            }
+
+        </Content>
     </Layout>
 }
 export default Main;
