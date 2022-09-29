@@ -1,12 +1,16 @@
 import { Button, Form, Input, InputNumber, Typography } from "antd";
 import { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
-import { SchemaProps } from "../services/types";
+import { SchemaDetails } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
 const {Text} = Typography;
 
-const CreateMessage = (props: SchemaProps): JSX.Element => {
+interface CreateMessageProps {
+    schema: SchemaDetails;
+}
+
+const CreateMessage = (props: CreateMessageProps): JSX.Element => {
     const [form] = Form.useForm();
     const [isMessageValid, setIsMessageValid] = useState("");
 

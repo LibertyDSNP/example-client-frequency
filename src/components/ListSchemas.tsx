@@ -19,7 +19,7 @@ const ListSchemas = (): JSX.Element => {
         setListOfSchemas(schemas);
     }
 
-    return <div>
+    return <>
     <Space direction="vertical">
         <Button onClick={listSchemas}>List Schemas</Button>
 
@@ -42,7 +42,7 @@ const ListSchemas = (): JSX.Element => {
         {showCreateMessageComp && <CreateMessage schema={selectedSchema}/>}
         {showLlistMessageComp && <ListMessages schema={selectedSchema}/>}
     </Space>
-    </div>
+    </>
 }
 
 export default ListSchemas;

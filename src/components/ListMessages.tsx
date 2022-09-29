@@ -3,19 +3,23 @@ import { Button, Space, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React from "react";
 import { fetchMessagesForSchema } from "../services/chain/apis/extrinsic";
-import { MessageDetails, SchemaProps } from "../services/types";
+import { MessageDetails, SchemaDetails } from "../services/types";
 import { staticSchema } from "./RegisterSchema";
 
-const ListMessages = (props: SchemaProps): JSX.Element => {
+interface ListMessageProps {
+    schema: SchemaDetails;
+}
+
+const ListMessages = (props: ListMessageProps): JSX.Element => {
 
     const [listOfMessages, setListOfMessage] = React.useState<MessageDetails[]>([]);
 
     const listMessages = async () => {
         const messages: MessageResponse[] = await fetchMessagesForSchema(parseInt(props.schema.schema_id));
 
-        let allMessages: MessageDetails[] = messages.map((msg) => {
+        let allMessages: MessageDetails[] = messages.map((msg, index) => {
             return {
-                key: Number(msg.index) + 1,
+                key: index,
                 payload: staticSchema.fromBuffer(Buffer.from(msg.payload.buffer)),
                 payload_length: msg.payload_length.toString()};
             });

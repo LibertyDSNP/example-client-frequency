@@ -14,7 +14,3 @@ export interface MessageDetails {
   payload: Json;
   payload_length: string;
 }
-
-export interface SchemaProps {
-  schema: SchemaDetails;
-}

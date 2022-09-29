@@ -63,7 +63,6 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.185",
     "react-app-rewired": "^2.2.1"
   }
 }
