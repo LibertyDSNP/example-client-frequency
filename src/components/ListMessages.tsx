@@ -20,7 +20,7 @@ const ListMessages = (props: ListMessageProps): JSX.Element => {
         let allMessages: MessageDetails[] = messages.map((msg, index) => {
             return {
                 key: index,
-                payload: staticSchema.fromBuffer(Buffer.from(msg.payload.buffer))};
+                payload: staticSchema.fromBuffer(Buffer.from(msg.payload.unwrap().buffer))};
             });
 
             setListOfMessage(allMessages);

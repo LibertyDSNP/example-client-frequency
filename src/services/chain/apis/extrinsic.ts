@@ -131,7 +131,7 @@ export const createMsaForProvider = async (
 export const fetchAllSchemas = async (): Promise<Array<SchemaDetails>> => {
   const api = requireGetProviderApi();
 
-  const schema_id = await api.rpc.schemas.getLatestSchemaId();
+  const schema_id = await (await api.query.schemas.schemaCount()).toNumber();
 
   let returnList: Array<SchemaDetails> = [];
   for (let i = 1; i <= schema_id; i++) {
