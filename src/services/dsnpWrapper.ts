@@ -2,8 +2,11 @@ import { setupProviderApi } from "./chain";
 import { Config, setConfig, getConfig, updateConfig, requireGetProviderApi } from "./config";
 import { Wallet, wallet, WalletType } from "./wallets/wallet";
 import { buildServiceAccount } from "./chain/buildServiceAccount";
-import { createMsaForProvider } from "./chain/apis/extrinsic";
+import {createProviderMsa, registerProvider} from "./chain/apis/extrinsic";
 import { Option, U64 } from "@polkadot/types-codec"
+import {EventRecord} from "@polkadot/types/interfaces";
+import {IEventData} from "@polkadot/types/types";
+import {Codec} from "avsc";
 
 /**
  * setupChainAndServiceProviders initializes the DSNP sdk with a chain provider and
@@ -28,11 +31,21 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     setConfig(conf);
 
     // querying this rpc endpoint responds with a PolkadotJS version of rust's Option    
-    let maybeServiceMsaId: Option<U64> = await providerApi.query.msa.messageSourceIdOf(serviceKeys.publicKey) as Option<U64>;
+    let maybeServiceMsaId: Option<U64> = await providerApi.query.msa.publicKeyToMsaId(serviceKeys.publicKey) as Option<U64>;
     if (maybeServiceMsaId.isEmpty) {
-        await createMsaForProvider(
+        await createProviderMsa(
             async (status, events)  => {
-                maybeServiceMsaId = await providerApi.query.msa.messageSourceIdOf(serviceKeys.publicKey) as Option<U64>;
+                console.log("got back from creating provider MSA")
+                maybeServiceMsaId = await providerApi.query.msa.publicKeyToMsaId(serviceKeys.publicKey) as Option<U64>;
+                if (maybeServiceMsaId.isNone) {
+                    alert("Could not fetch service provider MSA");
+                } else {
+                    console.log("registering provider")
+                    await registerProvider(
+                        async (status, events) => {},
+                        (error)=> { alert("Could not register Provider: " + error.message)}
+                    );
+                }
             },
             (error) => {
                 alert("Could not create MSA " + error.message);
@@ -41,6 +54,16 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     }
 
     let serviceMsaId: bigint = BigInt(maybeServiceMsaId.value.toString());
+    // check for service provider registration
+    const maybeProviderRegistryEntry = await providerApi.query.msa.providerToRegistryEntry(serviceMsaId);
+    if (maybeProviderRegistryEntry.isEmpty) {
+        console.log("try again registering provider")
+        await registerProvider(
+            async (status, events) => {},
+            (error)=> { alert("Could not register Provider: " + error.message)}
+        );
+    }
+
     conf.serviceMsaId = serviceMsaId;
     updateConfig(conf);
     return serviceMsaId;
@@ -52,9 +75,13 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
 export const getMsaId = async (wallet: Wallet): Promise<bigint | undefined> => {
     let providerApi = requireGetProviderApi();
     let walletAddress = wallet.getAddress();
-    let maybeServiceMsaId: Option<U64> = await providerApi.query.msa.messageSourceIdOf(walletAddress) as Option<U64>;
-    if (maybeServiceMsaId.isEmpty) { return undefined }
-    let res = maybeServiceMsaId.value.toBigInt();
+    console.log("walletAddr = %s", walletAddress)
+    let maybeMsaId: Option<U64> = await providerApi.query.msa.publicKeyToMsaId(walletAddress) as Option<U64>;
+    if (maybeMsaId.isEmpty) {
+        console.log("still no msaID");
+        return undefined
+    }
+    let res = maybeMsaId.value.toBigInt();
     console.log("msa ID: ", res);
     return res
 }

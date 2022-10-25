@@ -19,7 +19,7 @@ const Main = (): JSX.Element => {
     const [walletAddress, setWalletAddress] = React.useState<string>("");
 
     const [connectionLabel, setConnectionLabel] = useState<string>(
-        "connecting..."
+        "Chain waiting to connect..."
     );
 
     const [chainConnectionClass, setChainConnectionClass] = useState<string>(
@@ -38,7 +38,7 @@ const Main = (): JSX.Element => {
     }
 
     const getAndSetMsaId = async() => {
-        let msa_id = await getMsaId(wallet.wallet(walletType));
+        let msa_id = await getMsaId(wallet.wallet((walletType)));
         if (msa_id !== undefined) setMsaId(msa_id);
     }
 

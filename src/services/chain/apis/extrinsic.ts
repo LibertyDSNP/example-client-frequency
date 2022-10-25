@@ -18,7 +18,19 @@ import {
   MessageResponse,
 } from "@frequency-chain/api-augment/interfaces";
 import { SchemaDetails } from "../../types";
-import { message } from "antd";
+import {EventRecord} from "@polkadot/types/interfaces";
+
+
+const checkForFailedEvent = (events: Array<EventRecord>): string|undefined => {
+  let failedData: string|undefined;
+  events.forEach(({ phase, event: {data, method, section}}) => {
+    if (method === "ExtrinsicFailed") {
+      console.log("data: ", data);
+      failedData =  data.toString();
+    }
+  });
+  return failedData;
+}
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -71,7 +83,8 @@ export const createAccountViaService = async (
 
   const data: DelegateData = {
     authorizedMsaId: serviceMsaId,
-    permission: 0n,
+    schemaIds: Uint16Array.from([]),
+    expiration: 0n,
   };
 
   const signRaw = signer?.signRaw;
@@ -95,38 +108,56 @@ export const createAccountViaService = async (
     data
   );
 
-  // nonce: -1 is needed in latest versions - see
-  // https://substrate.stackexchange.com/questions/1776/how-to-use-polkadot-api-to-send-multiple-transactions-simultaneously
+// https://substrate.stackexchange.com/questions/1776/how-to-use-polkadot-api-to-send-multiple-transactions-simultaneously
   extrinsic
     ?.signAndSend(serviceKey, { nonce: -1 }, ({ status, events }) => {
-      if (status.isInBlock) {
-        console.log(`Completed at block hash #${status.asInBlock.toString()}`);
-      } else {
-        console.log(`Current status: ${status.type}`);
-      }
-      callback(status, events);
+      const extrinsicFailedData = checkForFailedEvent(events);
+      extrinsicFailedData === undefined ? callback(status, events) : errorCallback(Error(extrinsicFailedData));
     })
     .catch((error: any) => {
       errorCallback(error);
     });
 };
 
-export const createMsaForProvider = async (
+export const createProviderMsa = async (
   callback: DsnpCallback,
   errorCallback: DsnpErrorCallback
 ) => {
   const api = requireGetProviderApi();
   const serviceKeys: KeyringPair = requireGetServiceKeys();
+
   // instantiate the extrinsic object
-  const extrinsic = api.tx.msa.create();
-  await extrinsic
+  const createMsaExtrinsic = api.tx.msa.create();
+  await createMsaExtrinsic
     ?.signAndSend(serviceKeys, { nonce: -1 }, ({ status, events }) => {
-      callback(status, events);
+      const extrinsicFailedData = checkForFailedEvent(events);
+      extrinsicFailedData === undefined ? callback(status, events) : errorCallback(Error(extrinsicFailedData));
     })
     .catch((error: any) => {
       errorCallback(error);
     });
+
 };
+
+export const registerProvider = async (
+    callback: DsnpCallback,
+    errorCallback: DsnpErrorCallback
+) => {
+  const api = requireGetProviderApi();
+  const serviceKeys = requireGetServiceKeys();
+
+  const createProviderExtrinsic = api.tx.msa.createProvider("ExClPr");
+
+  await createProviderExtrinsic
+      ?.signAndSend(serviceKeys, { nonce: -1 }, ({ status, events }) => {
+        const extrinsicFailedData = checkForFailedEvent(events);
+        console.log({extrinsicFailedData})
+        extrinsicFailedData === undefined ? callback(status, events) : errorCallback(Error(extrinsicFailedData));
+      })
+      .catch((error: any) => {
+        errorCallback(error);
+      });
+}
 
 export const fetchAllSchemas = async (): Promise<Array<SchemaDetails>> => {
   const api = requireGetProviderApi();
@@ -194,9 +225,9 @@ export const addMessage = async (message: any, schema_id: number) => {
   const api = requireGetProviderApi();
   const serviceKeys: KeyringPair = requireGetServiceKeys();
 
-  console.log("message bytes right before sending it", message);
   const messageHex = "0x" + message.toString("hex");
-  console.log("message hex right before sending it", messageHex);
+  console.log("'addMessage' message hex", messageHex);
+
   const extrinsic = api.tx.messages.addOnchainMessage(
     null,
     schema_id,
