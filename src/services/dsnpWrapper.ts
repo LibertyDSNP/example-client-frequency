@@ -4,9 +4,6 @@ import { Wallet, wallet, WalletType } from "./wallets/wallet";
 import { buildServiceAccount } from "./chain/buildServiceAccount";
 import {createProviderMsa, registerProvider} from "./chain/apis/extrinsic";
 import { Option, U64 } from "@polkadot/types-codec"
-import {EventRecord} from "@polkadot/types/interfaces";
-import {IEventData} from "@polkadot/types/types";
-import {Codec} from "avsc";
 
 /**
  * setupChainAndServiceProviders initializes the DSNP sdk with a chain provider and
@@ -33,12 +30,15 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     // querying this rpc endpoint responds with a PolkadotJS version of rust's Option    
     let maybeServiceMsaId: Option<U64> = await providerApi.query.msa.publicKeyToMsaId(serviceKeys.publicKey) as Option<U64>;
     if (maybeServiceMsaId.isEmpty) {
+        // maybe it just hasn't been created yet.  attempt to create, then fetch the result.
         await createProviderMsa(
             async (status, events)  => {
                 maybeServiceMsaId = await providerApi.query.msa.publicKeyToMsaId(serviceKeys.publicKey) as Option<U64>;
                 if (maybeServiceMsaId.isEmpty) {
                     alert("Could not fetch service provider MSA");
                 } else {
+                    // once the MSA has been created, it must be "registered" by calling the createProvider extrinsic
+                    // before anyone can delegate to it.
                     await registerProvider(
                         async (status, events) => {},
                         (error)=> { alert("Could not register Provider: " + error.message)}
@@ -52,6 +52,7 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     }
 
     let serviceMsaId: bigint = BigInt(maybeServiceMsaId.value.toString());
+
     // check for service provider registration
     const maybeProviderRegistryEntry = await providerApi.query.msa.providerToRegistryEntry(serviceMsaId);
     if (maybeProviderRegistryEntry.isEmpty) {
