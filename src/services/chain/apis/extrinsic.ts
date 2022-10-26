@@ -81,10 +81,12 @@ export const createAccountViaService = async (
   const wallet = await requireGetWallet();
   const serviceMsaId = requireGetServiceMsaId();
 
+  const currentBlock = (await api.query.system.number()).toBigInt();
+
   const data: DelegateData = {
     authorizedMsaId: serviceMsaId,
     schemaIds: Uint16Array.from([]),
-    expiration: 0n,
+    expiration: currentBlock + 100n,
   };
 
   const signRaw = signer?.signRaw;
@@ -165,7 +167,6 @@ export const fetchAllSchemas = async (): Promise<Array<SchemaDetails>> => {
   const schemasMaxHex = (await (await api.query.schemas.currentSchemaIdentifierMaximum())).toHex();
 
   const schemasMax: number = parseInt(schemasMaxHex, 16);
-  debugger;
   let returnList: Array<SchemaDetails> = [];
   for (let i = 1; i <= schemasMax; i++) {
     try {

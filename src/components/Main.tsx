@@ -69,8 +69,8 @@ const Main = (): JSX.Element => {
                     async () => {
                         await getAndSetMsaId();
                     },
-                    () => {
-                        console.error("fail")
+                    (error) => {
+                        alert("Creating sponsored account failed: \n" + error.message);
                     }
                 )
             } catch (e) {
