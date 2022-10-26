@@ -170,11 +170,10 @@ export const registerProvider = async (
 export const fetchAllSchemas = async (): Promise<Array<SchemaDetails>> => {
   const api = requireGetProviderApi();
 
-  const schemasMaxHex = (
+  const schemasMax: bigint = (
     await await api.query.schemas.currentSchemaIdentifierMaximum()
-  ).toHex();
+  ).toBigInt();
 
-  const schemasMax: number = parseInt(schemasMaxHex, 16);
   let returnList: Array<SchemaDetails> = [];
   for (let i = 1; i <= schemasMax; i++) {
     try {
