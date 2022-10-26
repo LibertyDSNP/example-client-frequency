@@ -38,7 +38,7 @@ const Main = (): JSX.Element => {
     }
 
     const getAndSetMsaId = async() => {
-        let msa_id = await getMsaId(wallet.wallet((walletType)));
+        let msa_id = await getMsaId(wallet.wallet(walletType));
         if (msa_id !== undefined) setMsaId(msa_id);
     }
 

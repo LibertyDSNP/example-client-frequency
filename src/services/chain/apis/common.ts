@@ -3,7 +3,7 @@ import { AnyJson } from "@polkadot/types-codec/types";
 import { ExtrinsicStatus } from  "@polkadot/types/interfaces";
 import { EventRecord } from "@polkadot/types/interfaces";
 
-// // Notice: any changes to this should be reflected on scaleEncode(data: DelegateData) also
+// Notice: any changes to this should be reflected on scaleEncode(data: DelegateData) also
 export interface DelegateData {
   authorizedMsaId: bigint;  // BigNumber?
   schemaIds: Uint16Array;

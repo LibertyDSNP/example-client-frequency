@@ -35,12 +35,10 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     if (maybeServiceMsaId.isEmpty) {
         await createProviderMsa(
             async (status, events)  => {
-                console.log("got back from creating provider MSA")
                 maybeServiceMsaId = await providerApi.query.msa.publicKeyToMsaId(serviceKeys.publicKey) as Option<U64>;
-                if (maybeServiceMsaId.isNone) {
+                if (maybeServiceMsaId.isEmpty) {
                     alert("Could not fetch service provider MSA");
                 } else {
-                    console.log("registering provider")
                     await registerProvider(
                         async (status, events) => {},
                         (error)=> { alert("Could not register Provider: " + error.message)}
@@ -57,7 +55,6 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
     // check for service provider registration
     const maybeProviderRegistryEntry = await providerApi.query.msa.providerToRegistryEntry(serviceMsaId);
     if (maybeProviderRegistryEntry.isEmpty) {
-        console.log("try again registering provider")
         await registerProvider(
             async (status, events) => {},
             (error)=> { alert("Could not register Provider: " + error.message)}
@@ -75,13 +72,12 @@ export const setupChainAndServiceProviders = async (walletType: WalletType): Pro
 export const getMsaId = async (wallet: Wallet): Promise<bigint | undefined> => {
     let providerApi = requireGetProviderApi();
     let walletAddress = wallet.getAddress();
-    console.log("walletAddr = %s", walletAddress)
     let maybeMsaId: Option<U64> = await providerApi.query.msa.publicKeyToMsaId(walletAddress) as Option<U64>;
     if (maybeMsaId.isEmpty) {
         console.log("still no msaID");
         return undefined
     }
-    let res = maybeMsaId.value.toBigInt();
-    console.log("msa ID: ", res);
-    return res
+    let msaId = maybeMsaId.value.toBigInt();
+    console.log("msa ID: ", msaId);
+    return msaId
 }
