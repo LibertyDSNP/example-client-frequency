@@ -4,7 +4,7 @@ import Column from "antd/lib/table/Column";
 import React from "react";
 import { fetchMessagesForSchema } from "../services/chain/apis/extrinsic";
 import { MessageDetails, SchemaDetails } from "../services/types";
-import { staticSchema } from "./RegisterSchema";
+import { staticSchema } from "./CreateSchema";
 
 interface ListMessageProps {
     schema: SchemaDetails;

@@ -2,7 +2,7 @@ import { Button, Form, Input, InputNumber, Typography } from "antd";
 import { useState } from "react";
 import { addMessage } from "../services/chain/apis/extrinsic";
 import { SchemaDetails } from "../services/types";
-import { staticSchema } from "./RegisterSchema";
+import { staticSchema } from "./CreateSchema";
 
 const {Text} = Typography;
 

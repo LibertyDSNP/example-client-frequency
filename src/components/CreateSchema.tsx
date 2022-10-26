@@ -1,4 +1,4 @@
-import {registerSchema } from "../services/chain/apis/extrinsic";
+import {createSchema } from "../services/chain/apis/extrinsic";
 import {Button, Space, Typography} from "antd";
 import { useState } from "react";
 import * as avro from "avsc";
@@ -58,20 +58,20 @@ export const anotherSchema = avro.Type.forSchema (
 
 )
 
-const RegisterSchema = (): JSX.Element => {
+const CreateSchema = (): JSX.Element => {
 
 
     const [schemaRegistered, setSchemaRegistered] = useState("");
 
     const doRegisterSchema = async () => {
-        await registerSchema(JSON.stringify(staticSchema.schema()));
+        await createSchema(JSON.stringify(staticSchema.schema()));
         setSchemaRegistered("Schema Registered successfully");
     }
 
     return (
       <>
   <Space>
-      <Button onClick={doRegisterSchema}>Register Schema</Button>
+      <Button onClick={doRegisterSchema}>Create Schema</Button>
 
       <Text type="success">{schemaRegistered} </Text>
     </Space>
@@ -79,4 +79,4 @@ const RegisterSchema = (): JSX.Element => {
     )
 }
 
-export default RegisterSchema
+export default CreateSchema

@@ -212,11 +212,11 @@ export const fetchMessagesForSchema = async (
   return content;
 };
 
-export const registerSchema = async (input: string) => {
+export const createSchema = async (input: string) => {
   const api = requireGetProviderApi();
   const serviceKeys: KeyringPair = requireGetServiceKeys();
 
-  const extrinsic = api.tx.schemas.registerSchema(
+  const extrinsic = api.tx.schemas.createSchema(
     input,
     "AvroBinary",
     "OnChain"

@@ -3,7 +3,7 @@ import {Button, Layout, List, Space, Typography} from "antd";
 import * as wallet from "../services/wallets/wallet";
 import {getMsaId, setupChainAndServiceProviders} from "../services/dsnpWrapper";
 import {createAccountViaService } from "../services/chain/apis/extrinsic";
-import RegisterSchema from "./RegisterSchema";
+import CreateSchema from "./CreateSchema";
 import ListSchemas from "./ListSchemas";
 
 const {Header, Content, Footer} = Layout;
@@ -148,7 +148,7 @@ const Main = (): JSX.Element => {
         <Content>
             {
                 <Space direction="vertical">
-                <RegisterSchema />
+                <CreateSchema />
                 <ListSchemas />
                 </Space>
             }
