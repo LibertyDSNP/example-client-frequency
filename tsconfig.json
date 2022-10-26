@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,11 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "typeRoots": [
-    "./node_modules/@types/",
-    "./node_modules/@polkadot/types"
-  ],
-  "include": [
-    "src"
-  ]
+  "typeRoots": ["./node_modules/@types/", "./node_modules/@polkadot/types"],
+  "include": ["src"]
 }

@@ -144,4 +144,4 @@ export const requireGetServiceMsaId = (opts?: ConfigOpts): bigint => {
   const serviceMsaId = opts?.serviceMsaId || getConfig().serviceMsaId;
   if (!serviceMsaId) throw new MissingServiceMsaIdConfigError();
   return serviceMsaId;
-}
+};

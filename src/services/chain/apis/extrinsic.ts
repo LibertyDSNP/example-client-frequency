@@ -18,19 +18,20 @@ import {
   MessageResponse,
 } from "@frequency-chain/api-augment/interfaces";
 import { SchemaDetails } from "../../types";
-import {EventRecord} from "@polkadot/types/interfaces";
+import { EventRecord } from "@polkadot/types/interfaces";
 
-
-const checkForFailedEvent = (events: Array<EventRecord>): string|undefined => {
-  let failedData: string|undefined;
-  events.forEach(({ phase, event: {data, method, section}}) => {
+const checkForFailedEvent = (
+  events: Array<EventRecord>
+): string | undefined => {
+  let failedData: string | undefined;
+  events.forEach(({ phase, event: { data, method, section } }) => {
     if (method === "ExtrinsicFailed") {
       console.log("data: ", data);
-      failedData =  data.toString();
+      failedData = data.toString();
     }
   });
   return failedData;
-}
+};
 
 // import { PalletMsaAddProvider } from "@polkadot/types/lookup";
 // import {u8, u64} from "@polkadot/types-codec";
@@ -110,11 +111,13 @@ export const createAccountViaService = async (
     data
   );
 
-// https://substrate.stackexchange.com/questions/1776/how-to-use-polkadot-api-to-send-multiple-transactions-simultaneously
+  // https://substrate.stackexchange.com/questions/1776/how-to-use-polkadot-api-to-send-multiple-transactions-simultaneously
   extrinsic
     ?.signAndSend(serviceKey, { nonce: -1 }, ({ status, events }) => {
       const extrinsicFailedData = checkForFailedEvent(events);
-      extrinsicFailedData === undefined ? callback(status, events) : errorCallback(Error(extrinsicFailedData));
+      extrinsicFailedData === undefined
+        ? callback(status, events)
+        : errorCallback(Error(extrinsicFailedData));
     })
     .catch((error: any) => {
       errorCallback(error);
@@ -133,17 +136,18 @@ export const createProviderMsa = async (
   await createMsaExtrinsic
     ?.signAndSend(serviceKeys, { nonce: -1 }, ({ status, events }) => {
       const extrinsicFailedData = checkForFailedEvent(events);
-      extrinsicFailedData === undefined ? callback(status, events) : errorCallback(Error(extrinsicFailedData));
+      extrinsicFailedData === undefined
+        ? callback(status, events)
+        : errorCallback(Error(extrinsicFailedData));
     })
     .catch((error: any) => {
       errorCallback(error);
     });
-
 };
 
 export const registerProvider = async (
-    callback: DsnpCallback,
-    errorCallback: DsnpErrorCallback
+  callback: DsnpCallback,
+  errorCallback: DsnpErrorCallback
 ) => {
   const api = requireGetProviderApi();
   const serviceKeys = requireGetServiceKeys();
@@ -151,20 +155,24 @@ export const registerProvider = async (
   const createProviderExtrinsic = api.tx.msa.createProvider("ExClPr");
 
   await createProviderExtrinsic
-      ?.signAndSend(serviceKeys, { nonce: -1 }, ({ status, events }) => {
-        const extrinsicFailedData = checkForFailedEvent(events);
-        console.log({extrinsicFailedData})
-        extrinsicFailedData === undefined ? callback(status, events) : errorCallback(Error(extrinsicFailedData));
-      })
-      .catch((error: any) => {
-        errorCallback(error);
-      });
-}
+    ?.signAndSend(serviceKeys, { nonce: -1 }, ({ status, events }) => {
+      const extrinsicFailedData = checkForFailedEvent(events);
+      console.log({ extrinsicFailedData });
+      extrinsicFailedData === undefined
+        ? callback(status, events)
+        : errorCallback(Error(extrinsicFailedData));
+    })
+    .catch((error: any) => {
+      errorCallback(error);
+    });
+};
 
 export const fetchAllSchemas = async (): Promise<Array<SchemaDetails>> => {
   const api = requireGetProviderApi();
 
-  const schemasMaxHex = (await (await api.query.schemas.currentSchemaIdentifierMaximum())).toHex();
+  const schemasMaxHex = (
+    await await api.query.schemas.currentSchemaIdentifierMaximum()
+  ).toHex();
 
   const schemasMax: number = parseInt(schemasMaxHex, 16);
   let returnList: Array<SchemaDetails> = [];
@@ -216,11 +224,7 @@ export const createSchema = async (input: string) => {
   const api = requireGetProviderApi();
   const serviceKeys: KeyringPair = requireGetServiceKeys();
 
-  const extrinsic = api.tx.schemas.createSchema(
-    input,
-    "AvroBinary",
-    "OnChain"
-  );
+  const extrinsic = api.tx.schemas.createSchema(input, "AvroBinary", "OnChain");
   await extrinsic?.signAndSend(serviceKeys, { nonce: -1 });
 };
 

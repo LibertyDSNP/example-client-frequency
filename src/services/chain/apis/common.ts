@@ -1,11 +1,11 @@
 import { bnToBn, bnToHex } from "@polkadot/util";
 import { AnyJson } from "@polkadot/types-codec/types";
-import { ExtrinsicStatus } from  "@polkadot/types/interfaces";
+import { ExtrinsicStatus } from "@polkadot/types/interfaces";
 import { EventRecord } from "@polkadot/types/interfaces";
 
 // Notice: any changes to this should be reflected on scaleEncode(data: DelegateData) also
 export interface DelegateData {
-  authorizedMsaId: bigint;  // BigNumber?
+  authorizedMsaId: bigint; // BigNumber?
   schemaIds: Uint16Array;
   expiration: bigint;
 }
@@ -41,12 +41,12 @@ export function scaleEncodeDelegateData(data: DelegateData): string {
     isLe: true,
   }).substr(2);
 
-  const bitLength = (data.schemaIds.length)*16+8;
+  const bitLength = data.schemaIds.length * 16 + 8;
 
-  const schemaIds = bnToHex(
-      bnToBn(data.schemaIds.toString()),
-      {bitLength, isLe: true}
-  ).substr(2);
+  const schemaIds = bnToHex(bnToBn(data.schemaIds.toString()), {
+    bitLength,
+    isLe: true,
+  }).substr(2);
 
   const authorizedMsaId = bnToHex(bnToBn(data.authorizedMsaId), {
     bitLength: 64,
