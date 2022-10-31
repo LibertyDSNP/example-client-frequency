@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@frequency-chain/api-augment": "0.9.29-rc1",
+    "@frequency-chain/api-augment": "next",
     "@polkadot/api": "9.6.1",
     "@polkadot/extension-dapp": "0.44.6",
     "@polkadot/types": "9.6.1",

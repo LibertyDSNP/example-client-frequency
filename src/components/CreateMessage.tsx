@@ -1,6 +1,6 @@
 import { Button, Form, Input, InputNumber, Typography } from "antd";
 import { useState } from "react";
-import { addMessage } from "../services/chain/apis/extrinsic";
+import { createMessage } from "../services/chain/apis/extrinsic";
 import { SchemaDetails } from "../services/types";
 import { staticSchema } from "./CreateSchema";
 
@@ -29,6 +29,10 @@ const CreateMessage = (props: CreateMessageProps): JSX.Element => {
     }
   };
 
+  const handleError = async (e: Error) => {
+    alert(e);
+  }
+
   const validateMessage = (): boolean => {
     console.dir(form.getFieldsValue());
     const isMsgValid = staticSchema.isValid(form.getFieldsValue());
@@ -39,7 +43,7 @@ const CreateMessage = (props: CreateMessageProps): JSX.Element => {
   const submitMessage = async () => {
     let avroBuffer: Buffer = staticSchema.toBuffer(form.getFieldsValue());
     console.log("avro buffer: ", avroBuffer);
-    await addMessage(avroBuffer, parseInt(props?.schema?.schema_id));
+    await createMessage(avroBuffer, parseInt(props?.schema?.schema_id), () => {}, handleError);
   };
 
   return (

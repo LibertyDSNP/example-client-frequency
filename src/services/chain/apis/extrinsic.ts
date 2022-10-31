@@ -209,7 +209,7 @@ export const fetchMessagesForSchema = async (
 ): Promise<MessageResponse[]> => {
   const api = requireGetProviderApi();
   const messages: BlockPaginationResponseMessage =
-    await api.rpc.messages.getBySchema(schema_id, {
+    await api.rpc.messages.getBySchemaId(schema_id, {
       from_block: 0,
       from_index: 0,
       to_block: 50_000,
@@ -227,17 +227,31 @@ export const createSchema = async (input: string) => {
   await extrinsic?.signAndSend(serviceKeys, { nonce: -1 });
 };
 
-export const addMessage = async (message: any, schema_id: number) => {
+export const createMessage = async (
+  message: any,
+  schema_id: number,
+  success: DsnpCallback,
+  error: DsnpErrorCallback
+) => {
   const api = requireGetProviderApi();
   const serviceKeys: KeyringPair = requireGetServiceKeys();
 
   const messageHex = "0x" + message.toString("hex");
-  console.log("'addMessage' message hex", messageHex);
+  console.log("'createMessage' message hex", messageHex);
 
   const extrinsic = api.tx.messages.addOnchainMessage(
     null,
     schema_id,
     messageHex
   );
-  await extrinsic?.signAndSend(serviceKeys, { nonce: -1 });
+  await extrinsic?.signAndSend(
+    serviceKeys,
+    { nonce: -1 },
+    ({ status, events }) => {
+      const extrinsicFailedData = checkForFailedEvent(events);
+      extrinsicFailedData === undefined
+        ? success(status, events)
+        : error(Error(extrinsicFailedData));
+    }
+  );
 };
