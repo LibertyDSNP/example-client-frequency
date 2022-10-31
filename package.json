@@ -3,38 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@frequency-chain/api-augment": "0.0.0-64b44d",
-    "@polkadot/api": "9.4.3",
-    "@polkadot/extension-dapp": "^0.44.1",
-    "@polkadot/types": "9.4.3",
+    "@frequency-chain/api-augment": "next",
+    "@polkadot/api": "9.6.1",
+    "@polkadot/extension-dapp": "0.44.6",
+    "@polkadot/types": "9.6.1",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/bn.js": "^5.1.0",
     "@types/core-js": "^2.5.5",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.11.39",
-    "@types/react": "^18.0.19",
-    "@types/react-dom": "^18.0.6",
-    "antd": "^4.21.0",
+    "@types/jest": "^29.2.0",
+    "@types/node": "^18.11.5",
+    "@types/react": "^18.0.23",
+    "@types/react-dom": "^18.0.7",
+    "antd": "^4.23.6",
     "assert": "^2.0.0",
-    "avsc": "^5.7.5",
+    "avsc": "^5.7.6",
     "bignumber": "^1.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "core-js": "^3.24.1",
     "create-react-app": "^5.0.1",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.3",
     "path": "^0.12.7",
-    "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "stream": "^0.0.2",
-    "typescript": "^4.7.3",
-    "util": "^0.12.4",
-    "web-vitals": "^2.1.4"
+    "typescript": "^4.8.4",
+    "util": "^0.12.5",
+    "web-vitals": "^3.0.4"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -42,7 +41,7 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "tsc": "tsc",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|tsx|json)\""
   },
   "eslintConfig": {
     "extends": [
@@ -63,6 +62,10 @@
     ]
   },
   "devDependencies": {
-    "react-app-rewired": "^2.2.1"
+    "react-app-rewired": "^2.2.1",
+    "prettier": "^2.7.1"
+  },
+  "prettier": {
+    "bracketSpacing": true
   }
 }

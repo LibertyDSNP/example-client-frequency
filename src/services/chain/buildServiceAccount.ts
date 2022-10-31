@@ -8,15 +8,14 @@ import { Config } from "../config";
  * @returns the Keypair for service
  */
 export const buildServiceAccount = (curConfig: Config): KeyringPair => {
-    if (curConfig?.serviceKeys) return curConfig.serviceKeys;
-    const keyring = new Keyring();
-    if (process.env.REACT_APP_SERVICE_SECRET_SEED) {
-        return keyring.addFromUri(
-            process.env.REACT_APP_SERVICE_SECRET_SEED,
-            undefined,
-            "sr25519"
-        );
-    }
-    return keyring.addFromUri("//Alice", { name: "Alice default" }, "sr25519");
+  if (curConfig?.serviceKeys) return curConfig.serviceKeys;
+  const keyring = new Keyring();
+  if (process.env.REACT_APP_SERVICE_SECRET_SEED) {
+    return keyring.addFromUri(
+      process.env.REACT_APP_SERVICE_SECRET_SEED,
+      undefined,
+      "sr25519"
+    );
+  }
+  return keyring.addFromUri("//Alice", { name: "Alice default" }, "sr25519");
 };
-
