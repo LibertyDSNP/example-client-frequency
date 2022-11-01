@@ -5,12 +5,7 @@ import {
   requireGetSigner,
   requireGetWallet,
 } from "../../config";
-import {
-  DelegateData,
-  DsnpCallback,
-  DsnpErrorCallback,
-  scaleEncodeDelegateData,
-} from "./common";
+import { DelegateData, DsnpCallback, DsnpErrorCallback } from "./common";
 import { SignerPayloadRaw } from "@polkadot/types/types";
 import { KeyringPair } from "@polkadot/keyring/types";
 import {
@@ -95,11 +90,14 @@ export const createAccountViaService = async (
 
   let walletAddress = wallet.getAddress();
 
-  let encoded = scaleEncodeDelegateData(data);
+  const typedDelegateData = api.registry.createType(
+    "PalletMsaAddProvider",
+    data
+  );
 
   const result = await signRaw({
     address: walletAddress,
-    data: encoded,
+    data: typedDelegateData.toHex(),
     type: "bytes",
   } as SignerPayloadRaw);
 
