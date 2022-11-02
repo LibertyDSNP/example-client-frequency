@@ -1,5 +1,6 @@
 
 # Example Client for Frequency
+Intended largely for demos to a wider audience, this is a React application that connects to the Frequency parachain and do simple things with it.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
