@@ -13,7 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
   * If you aren't doing chain development, there is a docker image for running in instant-seal mode, is faster than building and running.
 * `cp .env.sample .env` and then edit `.env` to reflect what chain to connect to and what secret key to use for a Provider.
 It's fine if it is not already registered as an MSA; the app will register for you automatically.
-* Make sure the collators and relay chain you have configured are running.
+* If you aren't running an instant-seal Frequency parachain, Make sure the collators and relay chain you have configured are running.
 * `yarn start`
 
 ## Available Scripts
