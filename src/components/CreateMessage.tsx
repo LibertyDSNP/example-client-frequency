@@ -31,7 +31,7 @@ const CreateMessage = (props: CreateMessageProps): JSX.Element => {
 
   const handleError = async (e: Error) => {
     alert(e);
-  }
+  };
 
   const validateMessage = (): boolean => {
     console.dir(form.getFieldsValue());
@@ -43,7 +43,12 @@ const CreateMessage = (props: CreateMessageProps): JSX.Element => {
   const submitMessage = async () => {
     let avroBuffer: Buffer = staticSchema.toBuffer(form.getFieldsValue());
     console.log("avro buffer: ", avroBuffer);
-    await createMessage(avroBuffer, parseInt(props?.schema?.schema_id), () => {}, handleError);
+    await createMessage(
+      avroBuffer,
+      parseInt(props?.schema?.schema_id),
+      () => {},
+      handleError
+    );
   };
 
   return (
